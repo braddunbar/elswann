@@ -26,5 +26,37 @@
 	{% endif %}
 	<span class='date'>{{ post.published|date }}</span>	
 </p>
+<div id='comments'></div>
 
+{% endblock %}
+{% block scripts %}
+	<script src='http://www.google.com/friendconnect/script/friendconnect.js'></script>
+	<script>
+		google.friendconnect.container.setParentUrl("/");
+		google.friendconnect.container.renderWallGadget({
+			id: "comments",
+			site: "17225710136349188762",
+			"view-params": {
+				disableMinMax: true,
+				scope: "ID",
+				docId: {{ post.key.id }},
+				startMaximized: true
+			}
+		},{
+			BORDER_COLOR: "#ccc",
+			ENDCAP_BG_COLOR: "#ebebeb",
+			ENDCAP_TEXT_COLOR: "#333",
+			ENDCAP_LINK_COLOR: "#a56f38",
+			ALTERNATE_BG_COLOR: "#fff",
+			CONTENT_BG_COLOR: "#fff",
+			CONTENT_LINK_COLOR: "#00c",
+			CONTENT_TEXT_COLOR: "#333",
+			CONTENT_SECONDARY_LINK_COLOR: "#77c",
+			CONTENT_SECONDARY_TEXT_COLOR: "#666",
+			CONTENT_HEADLINE_COLOR: "#333",
+			DEFAULT_COMMENT_TEXT: "-- add your comment here --",
+			HEADER_TEXT: "Comments",
+				POSTS_PER_PAGE: "15"
+		});
+	</script>
 {% endblock %}

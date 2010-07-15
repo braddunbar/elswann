@@ -76,7 +76,8 @@ class Post(webapp.RequestHandler):
         if not post:
             return self.error(404)
         self.response.out.write(template.render('views/post.html', {
-            'post': post
+            'post': post,
+            'photos': models.recentphotos(),
         }))
 
 class Sitemap(webapp.RequestHandler):
@@ -93,7 +94,8 @@ class Sitemap(webapp.RequestHandler):
             paths.append('/tagged/' + tag)
 
         self.response.out.write(template.render('views/sitemap.xml', {
-            'paths': paths
+            'paths': paths,
+            'photos': models.recentphotos(),
         }))
 
 

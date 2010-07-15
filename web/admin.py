@@ -26,7 +26,9 @@ template.register_template_library('filters')
 class Index(webapp.RequestHandler):
 
     def get(self):
-        self.response.out.write(template.render('views/admin/index.html', {}))
+        self.response.out.write(template.render('views/admin/index.html', {
+            'photos': models.recentphotos(),
+        }))
 
 
 class PostForm(djangoforms.ModelForm):
@@ -38,7 +40,7 @@ class PostForm(djangoforms.ModelForm):
     }))
     tags = forms.CharField(widget=forms.Textarea(attrs={
         'rows': 5,
-        'cols': 20
+        'cols': 20,
     }))
     draft = forms.BooleanField(required=False)
 
@@ -62,7 +64,8 @@ class EditPost(webapp.RequestHandler):
                 initial={
                     'draft': post and not post.published,
                 })
-                .as_p()
+                .as_p(),
+            'photos': models.recentphotos(),
         }))
 
     def post(self, *args):
@@ -84,7 +87,8 @@ class EditPost(webapp.RequestHandler):
             self.redirect('/admin')
         else:
             self.response.out.write(template.render('views/admin/edit.html', {
-                'form': form.as_p()
+                'form': form.as_p(),
+                'photos': models.recentphotos(),
             }))
 
 
@@ -102,6 +106,7 @@ class Posts(webapp.RequestHandler):
             'prev_offset': max(0, offset - count),
             'next_offset': offset + count,
             'count': count,
+            'photos': models.recentphotos(),
         }))
 
 
@@ -152,6 +157,7 @@ class Photos(webapp.RequestHandler):
             'prev_offset': max(0, offset - count),
             'next_offset': offset + count,
             'count': count,
+            'photos': models.recentphotos(),
         }))
 
 

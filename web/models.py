@@ -1,4 +1,8 @@
 
+import config
+
+from django.utils import text
+
 from google.appengine.ext import db
 from google.appengine.api import images
 
@@ -10,6 +14,12 @@ class BlogPost(db.Model):
     updated = db.DateTimeProperty(auto_now=True)
     author = db.UserProperty(auto_current_user_add=True)
     draft = db.BooleanProperty(required=True)
+
+    def summary(self):
+        return text.truncate_html_words(
+            self.body,
+            config.summarylen,
+        )
 
     def path(self):
         id = str(self.key().id())
