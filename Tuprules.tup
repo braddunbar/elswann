@@ -1,0 +1,10 @@
+web = $(TUP_CWD)/web
+js = $(web)/js
+css = $(web)/css
+build = $(TUP_CWD)/build
+minjar = java -jar $(build)/yuicompressor-2.4.2.jar
+
+.gitignore
+
+!minjs = |> cat %f | $(minjar) --type js > %o |>
+!mincss = |> cat %f | $(minjar) --type css > %o |>

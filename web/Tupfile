@@ -1,0 +1,5 @@
+include_rules
+
+: img/*.jpg img/*.png img/*.ico js/*.js css/*.css \
+	|> stat -c\"/%%n\":\"/%%n?%%Y\", %f | sed -e "1s/^/{/" -e "\$s/,$/}/" > %o \
+	|> mtimes.json

@@ -1,0 +1,370 @@
+<!doctype html>
+<html>
+<head>
+	<title>{% block title %}el Swann{% endblock %}</title>
+	{% block style %}
+		<link rel='stylesheet' href='{{ "/css/screen.css"|mtime }}'>
+		<link rel='stylesheet' href='{{ "/css/lightbox.css"|mtime }}'>
+	{% endblock %}
+
+	<link rel='alternate feed' type='application/atom+xml' href='/feeds/atom.xml' title='Atom Feed'>
+</head>
+<body>
+	<!-- header starts -->
+	<div id='header-wrap'>
+
+		<div id='header-photo'>
+			<a href='/'>
+				<img alt='header photo' src='{{ "/img/header-photo.jpg"|mtime }}' width='890' height='290'>
+			</a>
+		</div>
+
+		<h1 id='logo-text'><a href='/' title=''>el Swann</a></h1>
+		<p id='intro'>photography, media, and design</p>
+
+		<div  id='nav'>
+			<ul>
+				{% block menu %}
+					<li id='current'><a href='/'>Home</a></li>
+					<li><a href='#pricing'>Pricing</a></li>
+				{% endblock %}
+			</ul>
+		</div>
+
+		<form id='quick-search' action='/' method='get'>
+			<p>
+				<label for='qsearch'>Search:</label>
+				<input class='tbox' id='qsearch' type='text' name='qsearch' value='Search this site...' title='Start typing and hit ENTER'>
+				<input class='btn' type='submit' value='Submit'>
+			</p>
+		</form>
+
+	<!-- header ends here -->
+	</div>
+
+	<!-- content starts -->
+	<div id='content-outer' class='clear'><div id='content-wrapper'>
+
+		<!-- column-one -->
+		<div id='content'>
+			<div class='col-one'>
+				{% block body %}{% endblock %}
+			</div>
+		</div>
+
+		<!-- column-two -->
+		<div class='col-two'>
+
+			<h3 class='follow-button'></h3>
+			<ul class='sidemenu tweets'>
+			</ul>
+
+			<!--
+			<h3>Sidebar Menu</h3>
+			<ul class='sidemenu'>
+                <li><a href='#' title=''>DreamTemplate <br>
+                <span>Over 6,000+ Premium Web Templates</span></a>
+                </li>
+                <li><a href='#' title=''>ThemeLayouts <br>
+                <span>Premium WordPress &amp; Joomla Themes</span></a>
+                </li>
+                <li><a href='#' title=''>ImHosted.com <br>
+                <span>Affordable Web Hosting Provider</span>
+                </a></li>
+                <li><a href='#' title=''>DreamStock <br>
+                <span>Download Amazing Stock Photos</span></a>
+                </li>
+                <li><a href='#' title=''>Evrsoft <br>
+                <span>Website Builder Software &amp; Tools</span></a>
+                </li>
+                <li><a href='#' title=''>Web Hosting <br>
+                <span>Top 10 Hosting Reviews</span></a>
+                </li>
+			</ul>
+
+			<h3>Links</h3>
+			<ul class='sidemenu'>
+				<li><a href='http://www.PDPhoto.org/'>PDPhoto</a></li>
+				<li><a href='http://www.alistapart.com'>Alistapart</a></li>
+				<li><a href='http://www.cssremix.com'>CSS Remix</a></li>
+				<li><a href='http://www.cssmania.com/'>CSS Mania</a></li>
+			</ul>
+
+			<h3>Lorem Ipsum</h3>
+
+			<p>
+				Vestibulum venenatis. Nulla vel ipsum. Proin rutrum, urna sit amet bibendum
+				pellentesque, ante sapien varius turpis, eu nonummy nunc urna scelerisque ante.
+				Nunc sed leo at dolor pharetra facilisis. Sed sed lectus at justo dapibus tristique.
+				Morbi molestie pulvinar elit. Donec dictum nibh nec est. Aliquam sagittis, lacus
+				a pharetra tempor, enim justo tempor nisi, at aliquet nulla metus sed augue.
+				Praesent sed nibh. Vestibulum bibendum enim ut nisi fringilla accumsan.
+				Nullam dapibus fermentum nulla. Phasellus in orci vel justo facilisis iaculis.
+				Quisque facilisis ornare felis. Curabitur nunc libero, dapibus vel, commodo nec,
+				semper a, massa. Suspendisse potenti. Morbi a nisl. Nunc euismod elit non lectus.
+			</p>
+			-->
+
+		</div>
+
+		<!-- column-three -->
+		<div class='col-three'>
+
+			<h3>Photography</h3>
+
+			<p>
+				Our commitment to excellence is our number one asset. We are
+				focused on giving you quality service at reasonable prices. We
+				intend to give you the full digital copies of your photo
+				sessions so that you can decide what to do with them. They are
+				YOUR memories and you deserve to have them all.
+
+				I specialize in outdoor portrait, sports, birthday and wedding
+				photography. While shooting portraits are great, I love to
+				capture the moment of an event. Contact us for candid wedding
+				and birthday packages.
+
+				We also have the capabilities to restore old photos.
+				Restoration prices begin at $20.00 and increase with the
+				severity of damage to the photo. Unfortunately, every photo
+				cannot be restored.
+			</p>
+
+			<h3>Media</h3>
+
+			<p>
+				Our media focus is on creating slide shows that attempt to
+				recreate the memories of special moments in your life. In the
+				past we have created slide shows for graduations, weddings, and
+				even funerals.  (Slide show prices vary based on the number of
+				photos and length.)
+
+				We can also turn your old VHS tapes into DVDs or better yet,
+				video files. This type of service is one that I do not take
+				lightly. I know how precious your videos are and we handle them
+				with the utmost care.
+			</p>
+
+			<p>
+				*We do not keep your files on our server. Once the files are
+				converted and checked for accuracy they are removed. You are
+				responsible for your DVD or Mpeg file.
+			</p>
+
+			<h4>VHS to DVD Conversion</h4>
+			<p>$45.00/hour of footage up to 6 hours</p>
+
+			<h4>VHS to Mpeg (File for your computer)</h4>
+			<p>$35.00/hour of footage up to 6 hours</p>
+
+			<h3>Design</h3>
+
+			<p>
+				As a design team we will work tirelessly to develop a logo for
+				you that is original and informational. Your company’s logo
+				should be recognizable at a glance. At el Swann Design will
+				strive to create a logo that makes your company stand out from
+				the crowd.
+
+				Design Pricing: Please remember that no project is the same.
+				Every logo and client requires a different amount of work. We
+				can’t give you an accurate quote until we know exactly what you
+				need created. Prices start as low as $99.00 but increase with
+				time and layouts.
+			</p>
+
+			<!--
+			<h3>Search Box</h3>
+			<form action='#' class='searchform'>
+				<p>
+				<input name='search_query' class='textbox' type='text'>
+  				<input name='search' class='button' value='Search' type='submit'>
+				</p>
+			</form>
+			-->
+
+		</div>
+
+	<!-- contents end here -->
+	</div></div>
+
+	<!-- footer starts here -->
+	<div id='footer-wrapper'>
+
+		<!-- column-one -->
+		<div id='footer'><div class='col-one'>
+
+			<h3>Recent Photos</h3>
+			<p class='thumbs'>
+				{% for photo in photos %}
+					<a rel='photo' href='{{ photo.path.view }}'>
+						<img class='thumb' src='{{ photo.path.thumb }}' alt='thumbnail'>
+					</a>
+				{% endfor %}
+			</p>
+
+			<!--
+			<h3>Resources</h3>
+
+			<p>
+				Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec libero. Suspendisse bibendum.
+				Cras id urna. Morbi tincidunt, orci ac convallis aliquam, lectus turpis varius lorem, eu
+				posuere nunc justo tempus leo.
+			</p>
+			-->
+
+			<h3><a name='pricing'>Pricing</a></h3>
+			<ul class='footer-list'>
+				<li>
+					<a href='#'>
+						$75.00 - Children's Outdoor Portrait Session - Basic
+						<br>
+						<span>Session Includes - 30 minutes at your selected location</span>
+					</a>
+					<ul>
+						<li>20 Full Quality Digital Photos - Includes Top 5</li>
+						<li>20 Low Resolution Photos; better suited to email</li>
+						<li>Top 5 Pics Edited</li>
+					</ul>
+				</li>
+				<li>
+					<a href='#'>
+						$75.00 - Children's Outdoor Portrait Session - Deluxe
+						<br>
+						<span>Session Includes- 1 Full Hour at your selected location</span>
+					</a>
+					<ul>
+						<li>30 Full Quality Digital Photos - Includes Top 10</li>
+						<li>30 Low Resolution Photos; better suited to email</li>
+						<li>Top 10 Pics Edited</li>
+					</ul>
+				</li>
+				<li>
+					<a href='#'>
+						$50.00 - Children's Sports Photography 
+						<br>
+						<span>Session Includes- 30 minutes of photography</span>
+					</a>
+					<ul>
+						<li>25 Full Quality Digital Photos - Includes Top 5</li>
+						<li>25 Low Resolution Photos; better suited to email</li>
+						<li>Top 5 Pics Edited</li>
+					</ul>
+				</li>
+				<li>
+					<a href='#'>
+						$125.00 - Full Family Outdoor Photo Session
+						<br>
+						<span>Session Includes- 1 Hour at your selected location</span>
+					</a>
+					<ul>
+						<li>40 Full Quality Digital Photos - Includes Top 10</li>
+						<li>40 Low Resolution Photos; better suited to email</li>
+						<li>Top 10 Pics Edited</li>
+					</ul>
+				</li>
+				<li>
+					<a href='#'>
+						$175.00 - Full Family Bonus Package
+						<br>
+						<span>Session Includes- 1.5 Hours at your selected location(s)</span>
+					</a>
+					<ul>
+						<li>40 Family Pictures + 25 Children's Outdoor Portraits</li>
+						<li>65 Full Quality Digital Photos - Includes Top 10</li>
+						<li>65 Low Resolution Photos; better suited to email</li>
+						<li>Top 5 Family Pics Edited</li>
+						<li>Top 5 Children's Pics Edited</li>
+					</ul>
+				</li>
+			</ul>
+
+		</div></div>
+
+		<!-- column-two -->
+		<div class='col-two'>
+
+			<!--
+			<h3>Lorem Ipsum</h3>
+
+			<p>
+			<strong>Lorem ipsum dolor</strong> <br>
+			Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec libero. Suspendisse bibendum.
+			Cras id urna. Morbi tincidunt, orci ac convallis aliquam, lectus turpis varius lorem, eu
+			posuere nunc justo tempus leo. Donec mattis, purus nec placerat bibendum, dui pede condimentum
+			odio, ac blandit ante orci ut diam. <a href='/'>Read more...</a>
+			</p>
+
+			<ul class='footer-list'>
+				<li><a href='/'>consequat molestie</a></li>
+				<li><a href='/'>sem justo</a></li>
+				<li><a href='/'>semper</a></li>
+				<li><a href='/'>magna sed purus</a></li>
+				<li><a href='/'>tincidunt</a></li>
+				<li><a href='/'>semper</a></li>
+				<li><a href='/'>magna sed purus</a></li>
+				<li><a href='/'>tincidunt</a></li>
+			</ul>
+			-->
+
+		</div>
+
+		<!-- column-three -->
+		<div class='col-three'>
+
+			<h3>About</h3>
+
+			<p>
+				<a href='http://www.twitter.com/elswann'>
+					<img src='/img/lawton.jpg' width='40' height='40' class='thumb float-left'>
+				</a>
+				el Swann was created after I saw a need for services like ours. For years, I created slide shows, photographed events, and even designed logos on my own. These hobbies became a way for me to share my creativity with others. Now I am taking it to the next level.
+			</p>
+
+		</div>
+
+		<div id='footer-bottom'>
+
+			<p class='bottom-left'>
+				&nbsp; &copy;2010 <strong>elSwann.com</strong> &nbsp; &nbsp;
+				design by <a href='http://www.styleshout.com/'>styleshout</a>
+			</p>
+
+			<p class='bottom-right'>
+				<a href='/'>Home</a> |
+				<a href='/feeds/atom.xml'>Feed</a>
+			</p>
+
+		</div>
+
+	</div>
+	<!-- footer ends here -->
+
+	<script src='http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js'></script>
+	<!--
+	<script src='http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js'></script>
+	-->
+	<script src='http://platform.twitter.com/anywhere.js?id=S7kjdzijerrpaDA43MX1ug&v=1'></script>
+	<script src='{{ "/js/jquery.lightbox.js"|mtime }}'></script>
+	<script>
+		twttr.anywhere( function( t ) {
+			t.hovercards();
+			t( ".follow-button" ).followButton( "elswann" );
+		});
+
+		jQuery(function( $ ) {
+			var url = "http://api.twitter.com/1/statuses/user_timeline/elswann.json?count=10&callback=?";
+			$.getJSON( url, function( data ) {
+				var list = $.map(data, function( s ) {
+					return "<li>" + s.text + "</li>";
+				});
+				$( ".tweets" ).html( list.join( "" ) );
+			});
+		});
+
+		$( "a[rel=photo]" ).lightbox({ fitToScreen: true });
+
+	</script>
+	{% block scripts %}{% endblock %}
+</body>
+</html>

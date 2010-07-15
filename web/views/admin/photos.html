@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}Admin - Photos{% endblock %}
+{% block body %}
+	<h2>Photos</h2>
+	<h2>Upload Photos</h2>
+	<form action='/admin/photo/upload' enctype='multipart/form-data' method='post'>
+		<input name='photos' type='file' multiple>
+		<input type='submit' value='Upload'>
+	</form>
+	{% ifnotequal last_photo -1 %}
+		<p>Photos {{ offset|add:1 }} to {{ last_photo|add:1 }}</p>
+		<table>
+			<thead>
+				<tr><th>Photo</th><th>Actions</th></tr>
+			</thead>
+			{% for photo in photos %}
+				<tr>
+					<td>
+						<img class='thumb' src='{{ photo.path.thumb }}'>
+					</td>
+					<td>
+						<a href='{{ photo.path.view }}'>View |</a>
+						<form class='delete' action='{{ photo.path.delete }}' method='post'>
+							<a href='#' class='delete'>Delete</a>
+						</form>
+					</td>
+				</tr>
+			{% endfor %}
+		</table>
+	{% else %}
+		<p>
+			No photos yet.
+		</p>
+	{% endifnotequal %}
+	{% ifnotequal offset 0 %}
+		<a href='?start={{ prev_offset }}&count={{ count }}'>&laquo; Previous</a>
+	{% endifnotequal %}
+	{% if photos|length_is:count %}
+		<a href='?start={{ next_offset }}&count={{ count }}'>Next &raquo;</a>
+	{% endif %}
+
+{% endblock %}
+{% block scripts %}
+<script>
+	jQuery( function( $ ){
+
+		$( ".delete" ).click( function( event ) {
+			var self = $( this );
+			if ( confirm( "Delete this photo?" ) ) {
+				self.closest( "form" ).submit();
+			}
+			return false;
+		})
+
+	});
+</script>
+{% endblock %}

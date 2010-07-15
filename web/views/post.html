@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}{{ post.title|escape }} - el Swann{% endblock %}
+{% block body %}
+<h2><a href='{{ post.path.view }}'>{{ post.title|escape }}</a></h2>
+
+<p class='post-info'>
+	<span>Posted by {{ post.author.nickname|escape }}</span>
+	{% if post.tags %}
+		<span> | Filed under </span>
+		{% for tag in post.tags %}
+			<a href="/tagged/{{ tag|escape }}">{{tag|escape}}</a>
+			{% if not forloop.last %},{% endif %}
+		{% endfor %}
+	{% endif %}
+</p>
+
+{{post.body}}
+
+<p class='postmeta'>
+	{% if prev %}
+		<a id="prev" href="{{ prev.path.view }}">Previous Post</a> |
+	{% endif %}
+	{% if next %}
+		<a id="next" href="{{ next.path.view }}">Next Post</a> |
+	{% endif %}
+	<span class='date'>{{ post.published|date }}</span>	
+</p>
+
+{% endblock %}

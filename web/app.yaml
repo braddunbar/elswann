@@ -1,0 +1,41 @@
+application: el-swann
+version: 0-0-1
+runtime: python
+api_version: 1
+
+handlers:
+
+- url: /css
+  static_dir: css
+  expiration: "300d"
+
+- url: /js
+  static_dir: js
+  expiration: "300d"
+
+- url: /img
+  static_dir: img
+  expiration: "300d"
+
+- url: /favicon\.ico
+  static_files: favicon.ico
+  upload: favicon\.ico
+
+- url: /robots\.txt
+  static_files: robots.txt
+  upload: robots\.txt
+
+- url: /remote_api
+  script: $PYTHON_LIB/google/appengine/ext/remote_api/handler.py
+  login: admin
+
+- url: /_ah/queue/deferred
+  script: deferred.py
+  login: admin
+
+- url: /admin(/.*)?
+  script: admin.py
+  login: admin
+
+- url: /.*
+  script: main.py
