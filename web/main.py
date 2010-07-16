@@ -130,12 +130,22 @@ class Thumbs(StaticHandler):
         self.serve(photo.thumb, 'image/jpeg')
 
 
+class AtomFeed(webapp.RequestHandler):
+
+    def get(self):
+        q = models.BlogPost.all().order('-published')
+        self.response.out.write(template.render('views/atom.xml', {
+            'posts': q,
+        }))
+
+
 def main():
     app = webapp.WSGIApplication([
             ('/?', Index),
+            ('/sitemap.xml', Sitemap),
+            ('/feeds/atom.xml', AtomFeed),
             ('/([\d]+)/?', Index),
             ('/post/([\d]+)/?', Post),
-            ('/sitemap.xml', Sitemap),
             ('/photo/([\d]+)/?', Photos),
             ('/photo/thumb/([\d]+)/?', Thumbs),
             ('/tagged/([^/]+)/?', Tagged),
