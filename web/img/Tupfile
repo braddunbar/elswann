@@ -4,6 +4,8 @@ include_rules
 : el.png swan.png |> convert %f -composite -trim -resize 16x16 %o |> favicon.ico
 : el.png swan.png elswann.png |> convert el.png swan.png -composite elswann.png -composite -trim %o |> logo.png
 
+: foreach camera.jpg vhs.jpg design.jpg |> convert %f -resize 150 %B-small.jpg |> %B-small.jpg
+
 : mason.jpg el.png elswann.png swan.png |> convert mason.jpg -crop 880x290+0+150 \
 	\( el.png swan.png -composite elswann.png -composite -trim \) -geometry +520+60 -composite %o \
 	|> header-photo.jpg

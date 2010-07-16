@@ -11,6 +11,8 @@
    HTML ELEMENTS
 ------------------------------------------------- */ 
 
+/* Misc */
+
 /* Top Elements */
 * { margin: 0; padding: 0; outline: 0 }
 
@@ -344,11 +346,15 @@ form.delete {
 	width: 940px;
 	margin: 0 auto;	
 	text-align: left;
+	background: #fff url(../img/content-bg.jpg) no-repeat;		
+}
+.services {
+	padding-left: 25px;
+	padding-right: 25px;
 }
 #content {
 	float: left;
 	width: 100%;
-	background: #fff url(../img/content-bg.jpg) no-repeat;		
 }
 
 .col-one {
@@ -568,4 +574,9 @@ p.thumbs{ padding: 12px 0 0 10px; }
 	content: "."; 
 }
 
-
+/* misc */
+.section {
+	text-align: center;
+	font-size: 200%;
+	font-family: Georgia;
+}

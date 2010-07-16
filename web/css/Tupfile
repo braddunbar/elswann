@@ -1,4 +1,4 @@
 
 include_rules
 
-: screen.css lightbox.css |> !mincss |> _screen.css
+: screen.css lightbox.css grids.css |> !mincss |> _screen.css
