@@ -18,7 +18,6 @@ from django import newforms as forms
 
 template.register_template_library('filters')
 version = os.environ['CURRENT_VERSION_ID']
-debug = os.environ['SERVER_SOFTWARE'].startswith('Development')
 
 class Index(webapp.RequestHandler):
 
@@ -41,6 +40,7 @@ class Index(webapp.RequestHandler):
             'prev': prev,
             'page': page,
             'photos': models.recentphotos(),
+            'config': config,
         }))
 
 
@@ -65,6 +65,7 @@ class Tagged(webapp.RequestHandler):
             'prev': prev,
             'page': page,
             'photos': models.recentphotos(),
+            'config': config,
         }))
 
 
@@ -78,6 +79,7 @@ class Post(webapp.RequestHandler):
         self.response.out.write(template.render('views/post.html', {
             'post': post,
             'photos': models.recentphotos(),
+            'config': config,
         }))
 
 class Sitemap(webapp.RequestHandler):
@@ -96,6 +98,7 @@ class Sitemap(webapp.RequestHandler):
         self.response.out.write(template.render('views/sitemap.xml', {
             'paths': paths,
             'photos': models.recentphotos(),
+            'config': config,
         }))
 
 
@@ -136,6 +139,7 @@ class AtomFeed(webapp.RequestHandler):
         q = models.BlogPost.all().order('-published')
         self.response.out.write(template.render('views/atom.xml', {
             'posts': q,
+            'config': config,
         }))
 
 
@@ -151,7 +155,7 @@ def main():
             ('/tagged/([^/]+)/?', Tagged),
             ('/tagged/([^/]+)/([\d]+)/?', Tagged),
         ],
-        debug=debug)
+        debug=config.debug)
     wsgiref.handlers.CGIHandler().run(app)
 
 if __name__ == '__main__':

@@ -3,8 +3,12 @@
 <head>
 	<title>{% block title %}el Swann{% endblock %}</title>
 	{% block style %}
-		<link rel='stylesheet' href='{{ "/css/screen.css"|mtime }}'>
-		<link rel='stylesheet' href='{{ "/css/lightbox.css"|mtime }}'>
+		{% if config.debug %}
+			<link rel='stylesheet' href='{{ "/css/screen.css"|mtime }}'>
+			<link rel='stylesheet' href='{{ "/css/lightbox.css"|mtime }}'>
+		{% else %}
+			<link rel='stylesheet' href='{{ "/css/_screen.css"|mtime }}'>
+		{% endif %}
 	{% endblock %}
 
 	<link rel='alternate feed' type='application/atom+xml' href='/feeds/atom.xml' title='Atom Feed'>

@@ -19,7 +19,6 @@ from google.appengine.ext.webapp import template
 from django import newforms as forms
 
 version = os.environ['CURRENT_VERSION_ID']
-debug = os.environ['SERVER_SOFTWARE'].startswith('Development')
 template.register_template_library('filters')
 
 
@@ -28,6 +27,7 @@ class Index(webapp.RequestHandler):
     def get(self):
         self.response.out.write(template.render('views/admin/index.html', {
             'photos': models.recentphotos(),
+            'config': config,
         }))
 
 
@@ -66,6 +66,7 @@ class EditPost(webapp.RequestHandler):
                 })
                 .as_p(),
             'photos': models.recentphotos(),
+            'config': config,
         }))
 
     def post(self, *args):
@@ -89,6 +90,7 @@ class EditPost(webapp.RequestHandler):
             self.response.out.write(template.render('views/admin/edit.html', {
                 'form': form.as_p(),
                 'photos': models.recentphotos(),
+                'config': config,
             }))
 
 
@@ -107,6 +109,7 @@ class Posts(webapp.RequestHandler):
             'next_offset': offset + count,
             'count': count,
             'photos': models.recentphotos(),
+            'config': config,
         }))
 
 
@@ -158,6 +161,7 @@ class Photos(webapp.RequestHandler):
             'next_offset': offset + count,
             'count': count,
             'photos': models.recentphotos(),
+            'config': config,
         }))
 
 
@@ -174,7 +178,7 @@ def main():
             ('/admin/photo/upload/?', PhotoUpload),
             ('/admin/photo/delete/([\d]+)/?', DeletePhoto),
         ],
-        debug=debug)
+        debug=config.debug)
     wsgiref.handlers.CGIHandler().run(app)
 
 

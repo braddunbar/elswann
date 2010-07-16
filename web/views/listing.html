@@ -17,7 +17,7 @@
 
 		<p class='postmeta'>
 			<a href='{{ post.path.view }}' class='readmore'>Read more</a> |
-			<a href='/' class='comments'>Comments</a> |
+			<a href='{{ post.path.view }}#comments' class='comments'>Comments</a> |
 			<span class='date'>{{ post.published|date }}</span>
 		</p>
 	{% endfor %}
