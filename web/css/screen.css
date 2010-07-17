@@ -408,7 +408,8 @@ form.delete {
 /* sidebar menu */
 ul.sidemenu {
 	text-align: left;
-	margin: 7px 5px 8px 0px; padding: 0;
+	margin: 7px 20px 8px 0px;
+	padding: 0;
 	text-decoration: none;		
 	background: url(../img/dots.gif) repeat-x left top;
 }
@@ -417,6 +418,12 @@ ul.sidemenu li {
 	background: url(../img/dots.gif) repeat-x left bottom;
 	padding: 7px 10px;
 	margin: 0;		
+}
+ul.sidemenu li span {
+	color: #444;
+	font-style: italic;
+	font-weight: normal;
+	font-family: Georgia, 'Times New Roman', Times, serif;
 }
 * html body ul.sidemenu li {
 	height: 1%;
@@ -467,13 +474,13 @@ ul.sidemenu ul li { background: none; }
 
 
 #footer-wrapper ul.footer-list {
-	/* border-top: 1px solid #111; */
+	border-top: 1px solid #111;
 	list-style: none;
 	padding: 0;	
 	margin-left: 0;	
 }
 #footer-wrapper ul.footer-list li {
-	/* border-bottom: 1px solid #111; */
+	border-bottom: 1px solid #111;
 }
 #footer-wrapper ul.footer-list li li {
 	border: none;

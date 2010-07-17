@@ -1,0 +1,4 @@
+
+include_rules
+
+: jquery.lightbox.js pretty.js home.js |> !minjs |> _home.js

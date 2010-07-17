@@ -3,6 +3,21 @@ version: 0-0-1
 runtime: python
 api_version: 1
 
+derived_file_type:
+- python_precompiled
+
+skip_files:
+- ^(.*/)?app\.yaml
+- ^(.*/)?app\.yml
+- ^(.*/)?index\.yaml
+- ^(.*/)?index\.yml
+- ^(.*/)?#.*#
+- ^(.*/)?.*~
+- ^(.*/)?.*\.py[co]
+- ^(.*/)?.*/RCS/.*
+- ^(.*/)?\..*
+- ^(.*/)?Tupfile
+
 handlers:
 
 - url: /css
