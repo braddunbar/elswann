@@ -45,4 +45,4 @@ class Photo(db.Model):
         }
 
 def recentphotos():
-    return Photo.all().order('-uploaded').fetch(12)
+    return Photo.all().order('-uploaded').fetch(20)

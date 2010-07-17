@@ -343,12 +343,10 @@ form.delete {
 	width: 100%;
 }
 #content-wrapper {
-	width: 940px;
+	width: 890px;
 	margin: 0 auto;	
 	text-align: left;
 	background: #fff url(../img/content-bg.jpg) no-repeat;		
-}
-.services {
 	padding-left: 25px;
 	padding-right: 25px;
 }
@@ -469,13 +467,13 @@ ul.sidemenu ul li { background: none; }
 
 
 #footer-wrapper ul.footer-list {
-	border-top: 1px solid #111;
+	/* border-top: 1px solid #111; */
 	list-style: none;
 	padding: 0;	
 	margin-left: 0;	
 }
 #footer-wrapper ul.footer-list li {
-	border-bottom: 1px solid #111;
+	/* border-bottom: 1px solid #111; */
 }
 #footer-wrapper ul.footer-list li li {
 	border: none;
@@ -503,13 +501,6 @@ ul.sidemenu ul li { background: none; }
 	text-decoration: none;	
 }
 
-#footer {
-	float: left;	
-	width: 100%;	
-	padding: 0;				
-	margin-left: 5px;	
-	margin-top: 10px;
-}
 #footer-bottom {
 	clear: both;
 	border-top: 1px solid #111;
@@ -575,8 +566,19 @@ p.thumbs{ padding: 12px 0 0 10px; }
 }
 
 /* misc */
+
 .section {
 	text-align: center;
-	font-size: 200%;
+	font-size: 300%;
 	font-family: Georgia;
+	border-bottom: solid 5px #ebebeb;
+	margin-left: 50px;
+	margin-right: 50px;
+}
+
+.section span {
+	position: relative;
+	top: 20px;
+	background: white;
+	padding: 5px;
 }

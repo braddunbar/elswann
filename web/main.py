@@ -24,22 +24,22 @@ class Index(webapp.RequestHandler):
     def get(self, *args):
         page = int(args[0]) if len(args) else 0
         q = models.BlogPost.all().order('-published')
-        q = q.fetch(config.pagesize + 1, page * config.pagesize)
+        q = q.fetch(config.postcount + 1, page * config.postcount)
 
         prev = None
         if page != 0:
             prev = '/' + ('' if page == 1 else str(page - 1))
 
         next = None
-        if len(q) > config.pagesize:
+        if len(q) > config.postcount:
             next = '/%s' % str(page + 1)
 
         self.response.out.write(template.render('views/listing.html', {
-            'posts': q[:config.pagesize],
+            'posts': q[:config.postcount],
             'next': next,
             'prev': prev,
             'page': page,
-            'photos': models.recentphotos(),
+            'recentphotos': models.recentphotos(),
             'config': config,
         }))
 
@@ -49,22 +49,22 @@ class Tagged(webapp.RequestHandler):
     def get(self, tag, *args):
         page = int(args[0]) if len(args) else 0
         q = models.BlogPost.all().filter('tags =', tag).order('-published')
-        q = q.fetch(config.pagesize + 1, page * config.pagesize)
+        q = q.fetch(config.postcount + 1, page * config.postcount)
 
         prev = None
         if page != 0:
             prev = '/tagged/%s/%s' % (tag, '' if page == 1 else str(page - 1))
 
         next = None
-        if len(q) > config.pagesize:
+        if len(q) > config.postcount:
             next = '/tagged/%s/%s' % (tag, str(page + 1))
 
         self.response.out.write(template.render('views/listing.html', {
-            'posts': q[:config.pagesize],
+            'posts': q[:config.postcount],
             'next': next,
             'prev': prev,
             'page': page,
-            'photos': models.recentphotos(),
+            'recentphotos': models.recentphotos(),
             'config': config,
         }))
 
@@ -78,7 +78,7 @@ class Post(webapp.RequestHandler):
             return self.error(404)
         self.response.out.write(template.render('views/post.html', {
             'post': post,
-            'photos': models.recentphotos(),
+            'recentphotos': models.recentphotos(),
             'config': config,
         }))
 
@@ -97,7 +97,6 @@ class Sitemap(webapp.RequestHandler):
 
         self.response.out.write(template.render('views/sitemap.xml', {
             'paths': paths,
-            'photos': models.recentphotos(),
             'config': config,
         }))
 

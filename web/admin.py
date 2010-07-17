@@ -2,6 +2,7 @@
 from __future__ import with_statement
 
 import os
+import config
 import models
 import logging
 import datetime
@@ -26,7 +27,7 @@ class Index(webapp.RequestHandler):
 
     def get(self):
         self.response.out.write(template.render('views/admin/index.html', {
-            'photos': models.recentphotos(),
+            'recentphotos': models.recentphotos(),
             'config': config,
         }))
 
@@ -65,7 +66,7 @@ class EditPost(webapp.RequestHandler):
                     'draft': post and not post.published,
                 })
                 .as_p(),
-            'photos': models.recentphotos(),
+            'recentphotos': models.recentphotos(),
             'config': config,
         }))
 
@@ -89,26 +90,32 @@ class EditPost(webapp.RequestHandler):
         else:
             self.response.out.write(template.render('views/admin/edit.html', {
                 'form': form.as_p(),
-                'photos': models.recentphotos(),
+                'recentphotos': models.recentphotos(),
                 'config': config,
             }))
 
 
 class Posts(webapp.RequestHandler):
 
-    def get(self):
-        offset = int(self.request.get('offset', 0))
-        count = int(self.request.get('count', 20))
-        q = models.BlogPost.all().order('-published').fetch(count, offset)
+    def get(self, *args):
+        page = int(args[0]) if len(args) else 0
+        q = models.BlogPost.all().order('-published')
+        q = q.fetch(config.pagesize + 1, page * config.pagesize)
+
+        prev = None
+        if page != 0:
+            prev = '/admin/posts' + ('' if page == 1 else str(page - 1))
+
+        next = None
+        if len(q) > config.pagesize:
+            next = '/admin/posts/%s' % str(page + 1)
 
         self.response.out.write(template.render('views/admin/posts.html', {
-            'posts': q,
-            'offset': offset,
-            'last_post': offset + len(q) - 1,
-            'prev_offset': max(0, offset - count),
-            'next_offset': offset + count,
-            'count': count,
-            'photos': models.recentphotos(),
+            'posts': q[:-1],
+            'prev': prev,
+            'next': next,
+            'page': page,
+            'recentphotos': models.recentphotos(),
             'config': config,
         }))
 
@@ -146,21 +153,25 @@ class PhotoUpload(webapp.RequestHandler):
 
 class Photos(webapp.RequestHandler):
 
-    def get(self):
-        offset = int(self.request.get('offset', 0))
-        count = int(self.request.get('count', 20))
-        q = models.Photo.all().order('-uploaded').fetch(count, offset)
+    def get(self, *args):
+        page = int(args[0]) if len(args) else 0
+        q = models.Photo.all().order('-uploaded')
+        q = q.fetch(config.pagesize + 1, page * config.pagesize)
 
-        logging.info(q)
+        prev = None
+        if page != 0:
+            prev = '/admin/photos' + ('' if page == 1 else str(page - 1))
+
+        next = None
+        if len(q) > config.pagesize:
+            next = '/admin/photos/%s' % str(page + 1)
 
         self.response.out.write(template.render('views/admin/photos.html', {
-            'photos': q,
-            'offset': offset,
-            'last_photo': offset + len(q) - 1,
-            'prev_offset': max(0, offset - count),
-            'next_offset': offset + count,
-            'count': count,
-            'photos': models.recentphotos(),
+            'photos': q[:-1],
+            'prev': prev,
+            'next': next,
+            'page': page,
+            'recentphotos': models.recentphotos(),
             'config': config,
         }))
 
@@ -170,11 +181,13 @@ def main():
             ('/admin/?', Index),
 
             ('/admin/posts/?', Posts),
+            ('/admin/posts/([\d]+)/?', Posts),
             ('/admin/post/?', EditPost),
             ('/admin/post/([\d]+)/?', EditPost),
             ('/admin/post/delete/([\d]+)/?', DeletePost),
 
             ('/admin/photos/?', Photos),
+            ('/admin/photos/([\d]+)/?', Photos),
             ('/admin/photo/upload/?', PhotoUpload),
             ('/admin/photo/delete/([\d]+)/?', DeletePhoto),
         ],

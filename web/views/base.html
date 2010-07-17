@@ -48,6 +48,7 @@
 	<!-- content starts -->
 	<div id='content-outer' class='clear'><div id='content-wrapper'>
 
+		{% block services %}
 		<div class='line services'>
 			<div class='unit size1of3'>
 				<h2>Photography</h2>
@@ -112,83 +113,23 @@
 			</div>
 		</div>
 
-		<p class='section'>&#167;</p>
+		<p class='section'><span>&sect;</span></p>
+		{% endblock %}
 
-		<!-- column-one -->
-		<div id='content'>
-			<div class='col-one'>
+		<div id='content' class='line'>
+			<div class='unit size2of3'>
 				{% block body %}{% endblock %}
 			</div>
-		</div>
-
-		<!-- column-two -->
-		<div class='col-two'>
-
-			<h3 class='follow-button'></h3>
-			<ul class='sidemenu tweets'>
-			</ul>
-
-			<!--
-			<h3>Sidebar Menu</h3>
-			<ul class='sidemenu'>
-                <li><a href='#' title=''>DreamTemplate <br>
-                <span>Over 6,000+ Premium Web Templates</span></a>
-                </li>
-                <li><a href='#' title=''>ThemeLayouts <br>
-                <span>Premium WordPress &amp; Joomla Themes</span></a>
-                </li>
-                <li><a href='#' title=''>ImHosted.com <br>
-                <span>Affordable Web Hosting Provider</span>
-                </a></li>
-                <li><a href='#' title=''>DreamStock <br>
-                <span>Download Amazing Stock Photos</span></a>
-                </li>
-                <li><a href='#' title=''>Evrsoft <br>
-                <span>Website Builder Software &amp; Tools</span></a>
-                </li>
-                <li><a href='#' title=''>Web Hosting <br>
-                <span>Top 10 Hosting Reviews</span></a>
-                </li>
-			</ul>
-
-			<h3>Links</h3>
-			<ul class='sidemenu'>
-				<li><a href='http://www.PDPhoto.org/'>PDPhoto</a></li>
-				<li><a href='http://www.alistapart.com'>Alistapart</a></li>
-				<li><a href='http://www.cssremix.com'>CSS Remix</a></li>
-				<li><a href='http://www.cssmania.com/'>CSS Mania</a></li>
-			</ul>
-
-			<h3>Lorem Ipsum</h3>
-
-			<p>
-				Vestibulum venenatis. Nulla vel ipsum. Proin rutrum, urna sit amet bibendum
-				pellentesque, ante sapien varius turpis, eu nonummy nunc urna scelerisque ante.
-				Nunc sed leo at dolor pharetra facilisis. Sed sed lectus at justo dapibus tristique.
-				Morbi molestie pulvinar elit. Donec dictum nibh nec est. Aliquam sagittis, lacus
-				a pharetra tempor, enim justo tempor nisi, at aliquet nulla metus sed augue.
-				Praesent sed nibh. Vestibulum bibendum enim ut nisi fringilla accumsan.
-				Nullam dapibus fermentum nulla. Phasellus in orci vel justo facilisis iaculis.
-				Quisque facilisis ornare felis. Curabitur nunc libero, dapibus vel, commodo nec,
-				semper a, massa. Suspendisse potenti. Morbi a nisl. Nunc euismod elit non lectus.
-			</p>
-			-->
-
-		</div>
-
-		<!-- column-three -->
-		<div class='col-three'>
-
-			<!--
-			<h3>Search Box</h3>
-			<form action='#' class='searchform'>
-				<p>
-				<input name='search_query' class='textbox' type='text'>
-  				<input name='search' class='button' value='Search' type='submit'>
+			<div class='unit size1of3 lastUnit'>
+				<h2>Recent Photos</h2>
+				<p class='thumbs'>
+					{% for photo in recentphotos %}
+						<a rel='photo' href='{{ photo.path.view }}'>
+							<img class='thumb' src='{{ photo.path.thumb }}' alt='thumbnail'>
+						</a>
+					{% endfor %}
 				</p>
-			</form>
-			-->
-
+			</div>
 		</div>
 
 	<!-- contents end here -->
@@ -198,26 +139,22 @@
 	<div id='footer-wrapper'>
 
 		<!-- column-one -->
-		<div id='footer'><div class='col-one'>
+		<div class='line'>
+		<div class='unit size1of4'>
 
-			<h3>Recent Photos</h3>
-			<p class='thumbs'>
-				{% for photo in photos %}
-					<a rel='photo' href='{{ photo.path.view }}'>
-						<img class='thumb' src='{{ photo.path.thumb }}' alt='thumbnail'>
-					</a>
-				{% endfor %}
-			</p>
-
-			<!--
-			<h3>Resources</h3>
+			<h3>About</h3>
 
 			<p>
-				Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec libero. Suspendisse bibendum.
-				Cras id urna. Morbi tincidunt, orci ac convallis aliquam, lectus turpis varius lorem, eu
-				posuere nunc justo tempus leo.
+				<a href='http://www.twitter.com/elswann'>
+					<img src='/img/lawton.jpg' width='40' height='40' class='thumb float-left'>
+				</a>
+				el Swann was created after I saw a need for services like ours. For years, I created slide shows, photographed events, and even designed logos on my own. These hobbies became a way for me to share my creativity with others. Now I am taking it to the next level.
 			</p>
-			-->
+
+		</div>
+
+		<!-- column-two -->
+		<div class='unit size1of2'>
 
 			<h3><a name='pricing'>Pricing</a></h3>
 			<ul class='footer-list'>
@@ -285,48 +222,16 @@
 				</li>
 			</ul>
 
-		</div></div>
-
-		<!-- column-two -->
-		<div class='col-two'>
-
-			<!--
-			<h3>Lorem Ipsum</h3>
-
-			<p>
-			<strong>Lorem ipsum dolor</strong> <br>
-			Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec libero. Suspendisse bibendum.
-			Cras id urna. Morbi tincidunt, orci ac convallis aliquam, lectus turpis varius lorem, eu
-			posuere nunc justo tempus leo. Donec mattis, purus nec placerat bibendum, dui pede condimentum
-			odio, ac blandit ante orci ut diam. <a href='/'>Read more...</a>
-			</p>
-
-			<ul class='footer-list'>
-				<li><a href='/'>consequat molestie</a></li>
-				<li><a href='/'>sem justo</a></li>
-				<li><a href='/'>semper</a></li>
-				<li><a href='/'>magna sed purus</a></li>
-				<li><a href='/'>tincidunt</a></li>
-				<li><a href='/'>semper</a></li>
-				<li><a href='/'>magna sed purus</a></li>
-				<li><a href='/'>tincidunt</a></li>
-			</ul>
-			-->
-
 		</div>
 
 		<!-- column-three -->
-		<div class='col-three'>
+		<div class='unit size1of4 lastUnit'>
 
-			<h3>About</h3>
+			<h3 class='follow-button'></h3>
+			<ul class='sidemenu tweets'>
+			</ul>
 
-			<p>
-				<a href='http://www.twitter.com/elswann'>
-					<img src='/img/lawton.jpg' width='40' height='40' class='thumb float-left'>
-				</a>
-				el Swann was created after I saw a need for services like ours. For years, I created slide shows, photographed events, and even designed logos on my own. These hobbies became a way for me to share my creativity with others. Now I am taking it to the next level.
-			</p>
-
+		</div>
 		</div>
 
 		<div id='footer-bottom'>
