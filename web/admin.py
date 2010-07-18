@@ -8,6 +8,11 @@ import logging
 import datetime
 import wsgiref.handlers
 
+#http://code.google.com/p/googleappengine/issues/detail?id=980
+from django.conf import settings
+settings._target = None
+os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
+
 from google.appengine.ext import db
 from google.appengine.api import users
 from google.appengine.api import images
