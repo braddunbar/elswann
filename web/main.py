@@ -3,11 +3,13 @@ from __future__ import with_statement
 
 import os
 import util
+import gzip
 import config
 import models
 import logging
 import wsgiref.handlers
 
+from StringIO import StringIO
 from datetime import datetime, timedelta
 
 from google.appengine.api import users
@@ -84,7 +86,7 @@ class Post(webapp.RequestHandler):
 
 class Sitemap(webapp.RequestHandler):
 
-    def get(self):
+    def get(self, gz):
         tags = set()
         paths = []
         
@@ -95,10 +97,23 @@ class Sitemap(webapp.RequestHandler):
         for tag in tags:
             paths.append('/tagged/' + tag)
 
-        self.response.out.write(template.render('views/sitemap.xml', {
+        xml = template.render('views/sitemap.xml', {
             'paths': paths,
             'config': config,
-        }))
+        })
+
+        if gz:
+            s = StringIO()
+            gzip.GzipFile(fileobj=s, mode='wb').write(xml)
+            s.seek(0)
+            content = s.read()
+            contentType = 'application/x-gzip'
+        else:
+            content = xml
+            contentType = 'application/xml'
+
+        self.response.headers['Content-Type'] = contentType
+        self.response.out.write(content)
 
 
 class StaticHandler(webapp.RequestHandler):
@@ -145,7 +160,7 @@ class AtomFeed(webapp.RequestHandler):
 def main():
     app = webapp.WSGIApplication([
             ('/?', Index),
-            ('/sitemap.xml', Sitemap),
+            ('/sitemap.xml(.gz)?', Sitemap),
             ('/feeds/atom.xml', AtomFeed),
             ('/([\d]+)/?', Index),
             ('/post/([\d]+)/?', Post),
