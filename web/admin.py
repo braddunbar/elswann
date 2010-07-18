@@ -8,8 +8,6 @@ import logging
 import datetime
 import wsgiref.handlers
 
-os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
-
 from google.appengine.ext import db
 from google.appengine.api import users
 from google.appengine.api import images
@@ -104,7 +102,7 @@ class Posts(webapp.RequestHandler):
 
         prev = None
         if page != 0:
-            prev = '/admin/posts' + ('' if page == 1 else str(page - 1))
+            prev = '/admin/posts/' + ('' if page == 1 else str(page - 1))
 
         next = None
         if len(q) > config.pagesize:
@@ -146,8 +144,17 @@ class PhotoUpload(webapp.RequestHandler):
         for img in self.request.get_all('photos'):
             photo = models.Photo()
             photo.img = db.Blob(img)
-            photo.thumb = images.resize(photo.img, 100, 100)
             photo.put()
+            models.setres(
+                photo.path()['view'],
+                photo.img,
+                'image/jpeg',
+            )
+            models.setres(
+                photo.path()['thumb'],
+                photo.thumb,
+                'image/jpeg',
+            )
         self.redirect('/admin')
 
 
@@ -160,7 +167,7 @@ class Photos(webapp.RequestHandler):
 
         prev = None
         if page != 0:
-            prev = '/admin/photos' + ('' if page == 1 else str(page - 1))
+            prev = '/admin/photos/' + ('' if page == 1 else str(page - 1))
 
         next = None
         if len(q) > config.pagesize:

@@ -48,6 +48,10 @@ handlers:
   script: deferred.py
   login: admin
 
+- url: /a/.*
+  script: $PYTHON_LIB/google/appengine/ext/admin
+  login: admin
+
 - url: /admin(/.*)?
   script: admin.py
   login: admin

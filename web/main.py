@@ -116,37 +116,6 @@ class Sitemap(webapp.RequestHandler):
         self.response.out.write(content)
 
 
-class StaticHandler(webapp.RequestHandler):
-
-    def serve(self, content, contentType):
-
-        expires = datetime.now() + timedelta(days=365)
-        expires = expires.strftime(util.HTTP_DATE_FMT)
-        self.response.headers['Expires'] = expires
-
-        self.response.headers['Cache-Control'] = 'public'
-        self.response.headers['Content-Type'] = contentType
-        self.response.out.write(content)
-
-
-class Photos(StaticHandler):
-
-    def get(self, id):
-        photo = models.Photo.get_by_id(int(id))
-        if not photo or not photo.img:
-            return self.error(404)
-        self.serve(photo.img, 'image/jpeg')
-
-
-class Thumbs(StaticHandler):
-
-    def get(self, id):
-        photo = models.Photo.get_by_id(int(id))
-        if not photo or not photo.thumb:
-            return self.error(404)
-        self.serve(photo.thumb, 'image/jpeg')
-
-
 class AtomFeed(webapp.RequestHandler):
 
     def get(self):
@@ -157,6 +126,21 @@ class AtomFeed(webapp.RequestHandler):
         }))
 
 
+class Resource(webapp.RequestHandler):
+
+    def get(self, path):
+        res = models.Resource.get_by_key_name(path)
+        if not res:
+            return self.error(404)
+
+        for header in res.headers:
+            key, val = header.split(':', 1)
+            self.response.headers[key] = str(val.strip())
+
+        self.response.headers['Content-Type'] = str(res.content_type)
+        self.response.out.write(res.body)
+
+
 def main():
     app = webapp.WSGIApplication([
             ('/?', Index),
@@ -164,10 +148,9 @@ def main():
             ('/feeds/atom.xml', AtomFeed),
             ('/([\d]+)/?', Index),
             ('/post/([\d]+)/?', Post),
-            ('/photo/([\d]+)/?', Photos),
-            ('/photo/thumb/([\d]+)/?', Thumbs),
             ('/tagged/([^/]+)/?', Tagged),
             ('/tagged/([^/]+)/([\d]+)/?', Tagged),
+            ('(/.*)', Resource),
         ],
         debug=config.debug)
     wsgiref.handlers.CGIHandler().run(app)

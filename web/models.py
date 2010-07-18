@@ -1,12 +1,15 @@
 
 import config
+import datetime
 
 from django.utils import text
 
 from google.appengine.ext import db
 from google.appengine.api import images
 
+
 class BlogPost(db.Model):
+
     title = db.StringProperty(required=True, indexed=False)
     body = db.TextProperty(required=True)
     tags = db.StringListProperty()
@@ -30,10 +33,11 @@ class BlogPost(db.Model):
             'preview': '/admin/post/preview/' + id,
         }
 
+
 class Photo(db.Model):
+
     title = db.StringProperty()
     img = db.BlobProperty()
-    thumb = db.BlobProperty()
     uploaded = db.DateTimeProperty(auto_now_add=True)
 
     def path(self):
@@ -44,5 +48,30 @@ class Photo(db.Model):
             'delete': '/admin/photo/delete/' + id,
         }
 
+
 def recentphotos():
     return Photo.all().order('-uploaded').fetch(20)
+
+
+class Resource(db.Model):
+    
+    body = db.BlobProperty()
+    content_type = db.StringProperty()
+    status = db.IntegerProperty(required=True, default=200)
+    last_mod = db.DateTimeProperty(required=True)
+    etag = db.StringProperty()
+    headers = db.StringListProperty(default=[])
+
+
+def setres(path, body, content_type, **kwargs):
+    defaults = {
+        'last_mod': datetime.datetime.now(),
+    }
+    defaults.update(kwargs)
+    res = Resource(
+        key_name=path,
+        body=body,
+        content_type=content_type,
+        **defaults
+    )
+    res.put()
