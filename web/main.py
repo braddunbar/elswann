@@ -137,8 +137,35 @@ class Resource(webapp.RequestHandler):
             key, val = header.split(':', 1)
             self.response.headers[key] = str(val.strip())
 
+        last_mod = res.last_mod.strftime(util.HTTP_DATE_FMT)
+        self.response.headers['Last-Modified'] = str(last_mod)
         self.response.headers['Content-Type'] = str(res.content_type)
+        self.response.headers['ETag'] = str('"%s"' % (res.etag,))
+
+        if self.not_modified(res):
+            self.response.set_status(304)
+            return
         self.response.out.write(res.body)
+
+    def not_modified(self, res):
+        if 'If-Modified-Since' in self.request.headers:
+            try:
+                last_mod = datetime.strptime(
+                    # IE8 - '; length=XXXX' bug
+                    self.request.headers['If-Modified-Since'].split(';')[0],
+                    util.HTTP_DATE_FMT
+                )
+                if last_mod >= res.last_mod.replace(microsecond=0):
+                    return True
+            except ValueError, e:
+                logging.error('ValueError:' + self.request.headers['If-Modified-Since'])
+
+        if 'If-None-Match' in self.request.headers:
+            etags = self.request.headers['If-None-Match'].split(',')
+            if res.etag in [s.strip('" ') for s in etags]:
+                return True
+
+        return False
 
 
 def main():

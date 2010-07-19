@@ -157,7 +157,7 @@ class PhotoUpload(webapp.RequestHandler):
             )
             models.setres(
                 photo.path()['thumb'],
-                photo.thumb,
+                images.resize(photo.img, 40, 40),
                 'image/jpeg',
             )
         self.redirect('/admin')

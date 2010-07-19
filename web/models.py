@@ -1,5 +1,6 @@
 
 import config
+import hashlib
 import datetime
 
 from django.utils import text
@@ -54,7 +55,7 @@ def recentphotos():
 
 
 class Resource(db.Model):
-    
+
     body = db.BlobProperty()
     content_type = db.StringProperty()
     status = db.IntegerProperty(required=True, default=200)
@@ -71,6 +72,7 @@ def setres(path, body, content_type, **kwargs):
     res = Resource(
         key_name=path,
         body=body,
+        etag=hashlib.sha1(body).hexdigest(),
         content_type=content_type,
         **defaults
     )
