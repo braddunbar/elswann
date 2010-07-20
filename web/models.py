@@ -54,13 +54,14 @@ class Photo(db.Model):
             self.path()['view'],
             self.img,
             'image/jpeg',
+            max_age=86400,
         )
         setres(
             self.path()['thumb'],
             images.resize(self.img, 40, 40),
             'image/jpeg',
+            max_age=86400,
         )
-        
 
 
 def recentphotos():
@@ -75,6 +76,7 @@ class Resource(db.Model):
     last_mod = db.DateTimeProperty(required=True)
     etag = db.StringProperty()
     headers = db.StringListProperty(default=[])
+    max_age = db.IntegerProperty()
 
 
 def getres(path):
@@ -91,7 +93,7 @@ def setres(path, body, content_type, headers=[], **kwargs):
         'last_mod': datetime.now(),
     }
     defaults.update(kwargs)
-    defaults['last_mod'].replace(seconds=0, microseconds=0)
+    defaults['last_mod'].replace(second=0, microsecond=0)
 
     res = Resource(
         key_name=path,

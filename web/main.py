@@ -142,6 +142,14 @@ class Resource(webapp.RequestHandler):
         self.response.headers['Content-Type'] = str(res.content_type)
         self.response.headers['ETag'] = str('"%s"' % (res.etag,))
 
+        if res.max_age:
+            header = 'max-age=%d, public' % res.max_age
+            self.response.headers['Cache-Control'] = header
+
+            expires = datetime.now() + timedelta(seconds=res.max_age)
+            expires = expires.strftime(util.HTTP_DATE_FMT)
+            self.response.headers['Expires'] = expires
+
         if self.not_modified(res):
             self.response.set_status(304)
             return
