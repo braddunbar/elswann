@@ -77,11 +77,21 @@ class Resource(db.Model):
     headers = db.StringListProperty(default=[])
 
 
+def getres(path):
+    if path.endswith('/'):
+        path = path[:-1]
+    return Resource.get_by_key_name(path)
+
+
 def setres(path, body, content_type, headers=[], **kwargs):
+    if path.endswith('/'):
+        path = path[:-1]
+
     defaults = {
         'last_mod': datetime.datetime.now(),
     }
     defaults.update(kwargs)
+
     res = Resource(
         key_name=path,
         body=body,

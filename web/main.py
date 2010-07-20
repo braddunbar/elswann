@@ -129,7 +129,7 @@ class AtomFeed(webapp.RequestHandler):
 class Resource(webapp.RequestHandler):
 
     def get(self, path):
-        res = models.Resource.get_by_key_name(path)
+        res = models.getres(path)
         if not res:
             return self.error(404)
 
@@ -181,6 +181,7 @@ def main():
         ],
         debug=config.debug)
     wsgiref.handlers.CGIHandler().run(app)
+
 
 if __name__ == '__main__':
     main()
