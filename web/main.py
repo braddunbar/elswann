@@ -135,7 +135,7 @@ class Resource(webapp.RequestHandler):
 
         for header in res.headers:
             key, val = header.split(':', 1)
-            self.response.headers[key] = str(val.strip())
+            self.response.headers[str(key)] = str(val.strip())
 
         last_mod = res.last_mod.strftime(util.HTTP_DATE_FMT)
         self.response.headers['Last-Modified'] = str(last_mod)

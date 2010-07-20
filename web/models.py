@@ -49,6 +49,19 @@ class Photo(db.Model):
             'delete': '/admin/photo/delete/' + id,
         }
 
+    def setres(self):
+        setres(
+            self.path()['view'],
+            self.img,
+            'image/jpeg',
+        )
+        setres(
+            self.path()['thumb'],
+            images.resize(self.img, 40, 40),
+            'image/jpeg',
+        )
+        
+
 
 def recentphotos():
     return Photo.all().order('-uploaded').fetch(20)
@@ -64,7 +77,7 @@ class Resource(db.Model):
     headers = db.StringListProperty(default=[])
 
 
-def setres(path, body, content_type, **kwargs):
+def setres(path, body, content_type, headers=[], **kwargs):
     defaults = {
         'last_mod': datetime.datetime.now(),
     }
@@ -74,6 +87,7 @@ def setres(path, body, content_type, **kwargs):
         body=body,
         etag=hashlib.sha1(body).hexdigest(),
         content_type=content_type,
+        headers=headers,
         **defaults
     )
     res.put()

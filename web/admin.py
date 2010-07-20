@@ -150,16 +150,7 @@ class PhotoUpload(webapp.RequestHandler):
             photo = models.Photo()
             photo.img = db.Blob(img)
             photo.put()
-            models.setres(
-                photo.path()['view'],
-                photo.img,
-                'image/jpeg',
-            )
-            models.setres(
-                photo.path()['thumb'],
-                images.resize(photo.img, 40, 40),
-                'image/jpeg',
-            )
+            photo.setres()
         self.redirect('/admin')
 
 
