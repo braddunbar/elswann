@@ -1,9 +1,9 @@
 
 import config
 import hashlib
-import datetime
 
 from django.utils import text
+from datetime import datetime, timedelta
 
 from google.appengine.ext import db
 from google.appengine.api import images
@@ -88,9 +88,10 @@ def setres(path, body, content_type, headers=[], **kwargs):
         path = path[:-1]
 
     defaults = {
-        'last_mod': datetime.datetime.now(),
+        'last_mod': datetime.now(),
     }
     defaults.update(kwargs)
+    defaults['last_mod'].replace(seconds=0, microseconds=0)
 
     res = Resource(
         key_name=path,
