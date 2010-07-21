@@ -114,7 +114,7 @@ class Posts(webapp.RequestHandler):
             next = '/admin/posts/%s' % str(page + 1)
 
         self.response.out.write(template.render('views/admin/posts.html', {
-            'posts': q[:-1],
+            'posts': q[:config.pagesize],
             'prev': prev,
             'next': next,
             'page': page,
@@ -170,7 +170,7 @@ class Photos(webapp.RequestHandler):
             next = '/admin/photos/%s' % str(page + 1)
 
         self.response.out.write(template.render('views/admin/photos.html', {
-            'photos': q[:-1],
+            'photos': q[:config.pagesize],
             'prev': prev,
             'next': next,
             'page': page,
