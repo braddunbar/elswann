@@ -79,6 +79,12 @@ class Resource(db.Model):
     max_age = db.IntegerProperty()
 
 
+def rmres(path):
+    res = getres(path)
+    if res:
+        res.delete()
+
+
 def getres(path):
     if path.endswith('/'):
         path = path[:-1]

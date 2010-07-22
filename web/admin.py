@@ -129,6 +129,8 @@ class DeletePhoto(webapp.RequestHandler):
         photo = models.Photo.get_by_id(int(id))
         if not photo:
             return self.error(404)
+        models.rmres(photo.path()['view'])
+        models.rmres(photo.path()['thumb'])
         photo.delete()
         self.redirect('/admin/photos')
 
