@@ -44,10 +44,6 @@ handlers:
   script: $PYTHON_LIB/google/appengine/ext/remote_api/handler.py
   login: admin
 
-- url: /_ah/queue/deferred
-  script: deferred.py
-  login: admin
-
 - url: /a/.*
   script: $PYTHON_LIB/google/appengine/ext/admin
   login: admin
