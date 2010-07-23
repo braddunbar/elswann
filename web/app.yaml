@@ -52,5 +52,9 @@ handlers:
   script: admin.py
   login: admin
 
+- url: /tasks(.*)
+  script: tasks.py
+  login: admin
+
 - url: /.*
   script: main.py

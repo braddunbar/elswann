@@ -7,6 +7,13 @@ from datetime import datetime, timedelta
 
 from google.appengine.ext import db
 from google.appengine.api import images
+from google.appengine.api.labs import taskqueue
+from google.appengine.api.apiproxy_stub_map import apiproxy
+
+
+def setfeeds():
+    taskqueue.add(url='/tasks/res/atom', method='GET')
+    taskqueue.add(url='/tasks/res/sitemap', method='GET')
 
 
 class BlogPost(db.Model):

@@ -3,13 +3,11 @@ from __future__ import with_statement
 
 import os
 import util
-import gzip
 import config
 import models
 import logging
 import wsgiref.handlers
 
-from StringIO import StringIO
 from datetime import datetime, timedelta
 
 from google.appengine.api import users
@@ -84,47 +82,6 @@ class Post(webapp.RequestHandler):
             'config': config,
         }))
 
-class Sitemap(webapp.RequestHandler):
-
-    def get(self, gz):
-        tags = set()
-        paths = []
-        
-        for post in models.BlogPost.all():
-            paths.append(post.path()['view'])
-            tags = tags.union(post.tags)
-
-        for tag in tags:
-            paths.append('/tagged/' + tag)
-
-        xml = template.render('views/sitemap.xml', {
-            'paths': paths,
-            'config': config,
-        })
-
-        if gz:
-            s = StringIO()
-            gzip.GzipFile(fileobj=s, mode='wb').write(xml)
-            s.seek(0)
-            content = s.read()
-            contentType = 'application/x-gzip'
-        else:
-            content = xml
-            contentType = 'application/xml'
-
-        self.response.headers['Content-Type'] = contentType
-        self.response.out.write(content)
-
-
-class AtomFeed(webapp.RequestHandler):
-
-    def get(self):
-        q = models.BlogPost.all().order('-published')
-        self.response.out.write(template.render('views/atom.xml', {
-            'posts': q,
-            'config': config,
-        }))
-
 
 class Resource(webapp.RequestHandler):
 
@@ -179,8 +136,6 @@ class Resource(webapp.RequestHandler):
 def main():
     app = webapp.WSGIApplication([
             ('/?', Index),
-            ('/sitemap.xml(.gz)?', Sitemap),
-            ('/feeds/atom.xml', AtomFeed),
             ('/([\d]+)/?', Index),
             ('/post/([\d]+)/?', Post),
             ('/tagged/([^/]+)/?', Tagged),
