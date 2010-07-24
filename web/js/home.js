@@ -7,7 +7,7 @@ function linkify( s ){
 
 jQuery(function( $ ) {
 
-	var url = "http://api.twitter.com/1/statuses/user_timeline/elswann.json?count=5&callback=?";
+	var url = "http://api.twitter.com/1/statuses/user_timeline/elswann.json?count=8&callback=?";
 
 	$.getJSON( url, function( data ) {
 		var list = $.map(data, function( s ) {

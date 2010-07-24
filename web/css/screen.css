@@ -337,6 +337,11 @@ form.delete {
 #header-wrap form#quick-search .btn {
 	display: none;	
 }
+#header-wrap form#quick-search a.feed {
+	position: absolute;
+	top: 4px;
+	right: 4px;
+}
 
 #content-outer {
 	background: #fff;
