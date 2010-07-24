@@ -24,6 +24,7 @@ class Index(webapp.RequestHandler):
     def get(self, *args):
         page = int(args[0]) if len(args) else 0
         q = models.BlogPost.all().order('-published')
+        q = q.filter('draft =', False)
         q = q.fetch(config.postcount + 1, page * config.postcount)
 
         prev = None
@@ -49,6 +50,7 @@ class Tagged(webapp.RequestHandler):
     def get(self, tag, *args):
         page = int(args[0]) if len(args) else 0
         q = models.BlogPost.all().filter('tags =', tag).order('-published')
+        q = q.filter('draft =', False)
         q = q.fetch(config.postcount + 1, page * config.postcount)
 
         prev = None
@@ -72,9 +74,8 @@ class Tagged(webapp.RequestHandler):
 class Post(webapp.RequestHandler):
 
     def get(self, id):
-        q = models.BlogPost.all()
         post = models.BlogPost.get_by_id(int(id))
-        if not post:
+        if not post or post.draft:
             return self.error(404)
         self.response.out.write(template.render('views/post.html', {
             'post': post,
