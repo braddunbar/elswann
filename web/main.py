@@ -84,6 +84,15 @@ class Post(webapp.RequestHandler):
         }))
 
 
+class Search(webapp.RequestHandler):
+
+    def get(self):
+        self.response.out.write(template.render('views/search.html', {
+            'recentphotos': models.recentphotos(),
+            'config': config,
+        }))
+
+
 class Resource(webapp.RequestHandler):
 
     def get(self, path):
@@ -141,6 +150,7 @@ def main():
             ('/post/([\d]+)/?', Post),
             ('/tagged/([^/]+)/?', Tagged),
             ('/tagged/([^/]+)/([\d]+)/?', Tagged),
+            ('/search', Search),
             ('(/.*)', Resource),
         ],
         debug=config.debug)

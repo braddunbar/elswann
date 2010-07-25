@@ -1,13 +1,19 @@
 {% extends "base.html" %}
-{% block title %}Search results - {{config.blog_name}}{% endblock %}
+{% block title %}el Swann - Search Results{% endblock %}
+{% block head %}
+	<link rel='stylesheet' href='http://www.google.com/cse/style/look/minimalist.css' type='text/css'>
+{% endblock %}
+{% block subhead %}{% endblock %}
 {% block body %}
-  <div id="cse-search-results"></div>
-  <script type="text/javascript">
-    var googleSearchIframeName = "cse-search-results";
-    var googleSearchFormName = "cse-search-box";
-    var googleSearchFrameWidth = 649;
-    var googleSearchDomain = "www.google.com";
-    var googleSearchPath = "/cse";
-  </script>
-  <script type="text/javascript" src="http://www.google.com/afsonline/show_afs_search.js"></script>
+	<div id="cse">Loading...</div>
+	<script src='http://www.google.com/jsapi'></script>
+	<script>
+		google.load( "search", "1", { language : "en" });
+		google.setOnLoadCallback( function() {
+			var id = "016534815636150527909:fyclp7goxhm";
+			var search = new google.search.CustomSearchControl( id );
+			search.setResultSetSize(google.search.Search.FILTERED_CSE_RESULTSET);
+			search.draw( "cse" );
+		}, true );
+	</script>
 {% endblock %}
