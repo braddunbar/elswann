@@ -2,7 +2,7 @@
 {% block title %}{% if form.instance %}Edit{% else %}New{% endif %} Post{% endblock %}
 {% block body %}
 	<h2>{% if form.instance %}Edit{% else %}New{% endif %} Post</h2>
-	<form method="post" action="">
+	<form class='gray' method="post" action="">
 		{{ form }}
 		<input type="submit" value="Submit post" />
 	</form>

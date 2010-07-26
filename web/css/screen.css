@@ -116,11 +116,11 @@ blockquote {
 }
 
 /* start - table */
-table {
+table.gray {
 	border-collapse: collapse;
 	margin: 15px 10px;	
 }
-th {
+table.gray th {
 	color: #555;
 	background: #E6E6E6;
 	height: 38px;
@@ -132,11 +132,11 @@ th {
   	border-style: solid;
   	border-color: #ebebeb #d4d4d4 #d4d4d4 #ebebeb;	
 }
-tr {
+table.gray tr {
 	height: 34px;	
 	background: #fff;
 }
-td {
+table.gray td {
 	padding-left: 11px;
 	padding-right: 11px;
 	border: 1px solid #ECECEC;	
@@ -144,7 +144,7 @@ td {
 /* end - table */
 
 /* form elements */
-form {
+form.gray {
 	margin: 15px 10px; padding: 5px 10px 20px 10px;
 	border: 1px solid #f1f1f1; 
 	background: #fdfdfd; 	
@@ -161,7 +161,7 @@ input, select {
 	color: #666666;
 	background: #fff;  	
 }
-textarea {
+form.gray textarea {
 	width: 250px;
 	padding: 4px;
 	font: normal 1em Verdana, sans-serif;

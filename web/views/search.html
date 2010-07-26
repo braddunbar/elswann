@@ -13,7 +13,9 @@
 			var id = "016534815636150527909:fyclp7goxhm";
 			var search = new google.search.CustomSearchControl( id );
 			search.setResultSetSize(google.search.Search.FILTERED_CSE_RESULTSET);
-			search.draw( "cse" );
+			var options = new google.search.DrawOptions();
+			options.setAutoComplete( true );
+			search.draw( "cse", options );
 		}, true );
 	</script>
 {% endblock %}

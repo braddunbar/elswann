@@ -1,4 +1,5 @@
 
+import util
 import gzip
 import config
 import models
@@ -48,6 +49,7 @@ class Sitemap(webapp.RequestHandler):
         gzip.GzipFile(fileobj=s, mode='wb').write(xml)
         s.seek(0)
         models.setres('/sitemap.xml.gz', s.read(), 'application/x-gzip')
+        util.pingsitemap()
 
 
 def main():

@@ -14,7 +14,7 @@
 			<a href='{{ next }}'>Next &raquo;</a>
 		{% endif %}
 	</p>
-	<table>
+	<table class='gray'>
 		<thead>
 			<tr><th>Title</th><th>Published</th><th>Actions</th></tr>
 		</thead>
@@ -37,7 +37,7 @@
 						<a href='{{ post.path.view }}'>View |</a>
 					{% endif %}
 					<a href='{{ post.path.edit }}'>Edit |</a>
-					<form class='delete' action='{{ post.path.delete }}' method='post'>
+					<form class='delete gray' action='{{ post.path.delete }}' method='post'>
 						<a href='#' class='delete'>Delete</a>
 					</form>
 				</td>

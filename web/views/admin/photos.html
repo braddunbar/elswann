@@ -2,7 +2,7 @@
 {% block title %}Admin - Photos{% endblock %}
 {% block body %}
 	<h2>Photos</h2>
-	<form action='/admin/photo/upload' enctype='multipart/form-data' method='post'>
+	<form class='gray' action='/admin/photo/upload' enctype='multipart/form-data' method='post'>
 		<input name='photos' type='file' multiple>
 		<input type='submit' value='Upload'>
 	</form>
@@ -14,7 +14,7 @@
 			<a href='{{ next }}'>Next &raquo;</a>
 		{% endif %}
 	</p>
-	<table>
+	<table class='gray'>
 		<thead>
 			<tr><th>Photo</th><th>Actions</th></tr>
 		</thead>
@@ -25,7 +25,7 @@
 				</td>
 				<td>
 					<a href='{{ photo.path.view }}'>View |</a>
-					<form class='delete' action='{{ photo.path.delete }}' method='post'>
+					<form class='delete gray' action='{{ photo.path.delete }}' method='post'>
 						<a href='#' class='delete'>Delete</a>
 					</form>
 				</td>
