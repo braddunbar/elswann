@@ -9,7 +9,7 @@ from google.appengine.api import urlfetch
 HTTP_DATE_FMT = "%a, %d %b %Y %H:%M:%S GMT"
 
 
-def ping_sitemap():
+def pingsitemap():
     if config.debug:
         return
     url = 'http://www.google.com/webmasters/tools/ping?sitemap='
