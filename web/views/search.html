@@ -4,8 +4,8 @@
 	<link rel='stylesheet' href='http://www.google.com/cse/style/look/minimalist.css' type='text/css'>
 {% endblock %}
 {% block subhead %}{% endblock %}
-{% block body %}
-	<div id="cse">Loading...</div>
+{% block main %}
+	<div id="cse"><h2>Loading...</h2></div>
 	<script src='http://www.google.com/jsapi'></script>
 	<script>
 		google.load( "search", "1", { language : "en" });
@@ -18,4 +18,4 @@
 			search.draw( "cse", options );
 		}, true );
 	</script>
-{% endblock %}
+{% endblock main %}

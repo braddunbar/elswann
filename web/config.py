@@ -3,7 +3,7 @@ import os
 
 debug = os.environ['SERVER_SOFTWARE'].startswith('Development')
 
-host = 'elswann.com'
+host = 'www.elswann.com'
 
 postcount = 3
 

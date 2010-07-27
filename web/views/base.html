@@ -140,9 +140,10 @@
 		<p class='section'><span>&sect;</span></p>
 		{% endblock %}
 
+		{% block main %}
 		<div id='content' class='line'>
 			<div class='unit size2of3'>
-				{% block body %}{% endblock %}
+				{% block body %}{% endblock body %}
 			</div>
 			<div class='unit size1of3 lastUnit'>
 				<h2>Recent Photos</h2>
@@ -155,6 +156,7 @@
 				</p>
 			</div>
 		</div>
+		{% endblock main %}
 
 	<!-- contents end here -->
 	</div></div>

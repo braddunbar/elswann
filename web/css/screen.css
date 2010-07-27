@@ -348,6 +348,7 @@ form.delete {
 #content-outer {
 	background: #fff;
 	width: 100%;
+	min-height: 300px;
 }
 #content-wrapper {
 	width: 890px;
