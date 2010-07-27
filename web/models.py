@@ -14,6 +14,7 @@ from google.appengine.api.apiproxy_stub_map import apiproxy
 def setfeeds():
     taskqueue.add(url='/tasks/res/atom', method='GET')
     taskqueue.add(url='/tasks/res/sitemap', method='GET')
+    taskqueue.add(url='/tasks/res/robots', method='GET')
 
 
 class BlogPost(db.Model):

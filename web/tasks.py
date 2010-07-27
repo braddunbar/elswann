@@ -25,6 +25,15 @@ class AtomFeed(webapp.RequestHandler):
         models.setres('/feeds/atom.xml', body, 'application/atom+xml')
 
 
+class Robots(webapp.RequestHandler):
+
+    def get(self):
+        body = template.render('views/robots.txt', {
+            'config': config,
+        })
+        models.setres('/robots.txt', body, 'text/plain')
+
+
 class Sitemap(webapp.RequestHandler):
 
     def get(self):
@@ -56,6 +65,7 @@ def main():
     app = webapp.WSGIApplication([
             ('/tasks/res/atom', AtomFeed),
             ('/tasks/res/sitemap', Sitemap),
+            ('/tasks/res/robots', Robots),
         ],
         debug=config.debug)
     wsgiref.handlers.CGIHandler().run(app)
