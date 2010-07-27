@@ -1,3 +1,4 @@
 Sitemap: http://{{ config.host }}/sitemap.xml
 User-agent: *
+Disallow: /admin/
 Allow: /
