@@ -61,8 +61,17 @@ class Sitemap(webapp.RequestHandler):
         util.pingsitemap()
 
 
+class Update(webapp.RequestHandler):
+
+    def get(self):
+        taskqueue.add(url='/tasks/res/atom', method='GET')
+        taskqueue.add(url='/tasks/res/sitemap', method='GET')
+        taskqueue.add(url='/tasks/res/robots', method='GET')
+
+
 def main():
     app = webapp.WSGIApplication([
+            ('/tasks/res/upd', Update),
             ('/tasks/res/atom', AtomFeed),
             ('/tasks/res/sitemap', Sitemap),
             ('/tasks/res/robots', Robots),

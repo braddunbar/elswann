@@ -18,6 +18,7 @@ from google.appengine.api import users
 from google.appengine.api import images
 from google.appengine.ext import webapp
 from google.appengine.ext.db import djangoforms
+from google.appengine.api.labs import taskqueue
 from google.appengine.ext.webapp import template
 
 from django import newforms as forms
@@ -96,7 +97,7 @@ class EditPost(webapp.RequestHandler):
                 'recentphotos': models.recentphotos(),
                 'config': config,
             }))
-        models.setfeeds()
+        taskqueue.add(url='/tasks/res/upd', method='GET')
 
 
 class Posts(webapp.RequestHandler):
@@ -133,7 +134,7 @@ class DeletePhoto(webapp.RequestHandler):
         models.rmres(photo.path()['view'])
         models.rmres(photo.path()['thumb'])
         photo.delete()
-        models.setfeeds()
+        taskqueue.add(url='/tasks/res/upd', method='GET')
         self.redirect('/admin/photos')
 
 
@@ -144,7 +145,7 @@ class DeletePost(webapp.RequestHandler):
         if not post:
             return self.error(404)
         post.delete()
-        models.setfeeds()
+        taskqueue.add(url='/tasks/res/upd', method='GET')
         self.redirect('/admin')
 
 
@@ -156,7 +157,7 @@ class PhotoUpload(webapp.RequestHandler):
             photo.img = db.Blob(img)
             photo.put()
             photo.setres()
-        models.setfeeds()
+        taskqueue.add(url='/tasks/res/upd', method='GET')
         self.redirect('/admin')
 
 
