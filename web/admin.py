@@ -97,6 +97,7 @@ class EditPost(webapp.RequestHandler):
                 'recentphotos': models.recentphotos(),
                 'config': config,
             }))
+        taskqueue.add(url=post.path.update, method='GET')
         taskqueue.add(url='/tasks/upd', method='GET')
 
 

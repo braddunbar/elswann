@@ -71,19 +71,6 @@ class Tagged(webapp.RequestHandler):
         }))
 
 
-class Post(webapp.RequestHandler):
-
-    def get(self, id):
-        post = models.BlogPost.get_by_id(int(id))
-        if not post or post.draft:
-            return self.error(404)
-        self.response.out.write(template.render('views/post.html', {
-            'post': post,
-            'recentphotos': models.recentphotos(),
-            'config': config,
-        }))
-
-
 class Search(webapp.RequestHandler):
 
     def get(self):
@@ -147,7 +134,6 @@ def main():
     app = webapp.WSGIApplication([
             ('/?', Index),
             ('/([\d]+)/?', Index),
-            ('/post/([\d]+)/?', Post),
             ('/tagged/([^/]+)/?', Tagged),
             ('/tagged/([^/]+)/([\d]+)/?', Tagged),
             ('/search', Search),

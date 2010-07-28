@@ -12,6 +12,7 @@ from google.appengine.ext import webapp
 from google.appengine.api.labs import taskqueue
 from google.appengine.ext.webapp import template
 
+template.register_template_library('filters')
 
 class AtomFeed(webapp.RequestHandler):
 
@@ -74,6 +75,8 @@ class UpdateAll(webapp.RequestHandler):
     def get(self):
         for photo in models.Photo.all():
             taskqueue.add(url=photo.path.update, method='GET')
+        for post in models.BlogPost.all():
+            taskqueue.add(url=post.path.update, method='GET')
         taskqueue.add(url='/tasks/upd', method='GET')
 
 
@@ -86,6 +89,23 @@ class Photo(webapp.RequestHandler):
         photo.setres()
 
 
+class Post(webapp.RequestHandler):
+
+    def get(self, id):
+        post = models.BlogPost.get_by_id(int(id))
+        if not post:
+            return self.error(404)
+        if post.draft:
+            models.rmres(post.path.view)
+            return
+        body = template.render('views/post.html', {
+            'post': post,
+            'recentphotos': models.recentphotos(),
+            'config': config,
+        })
+        models.setres(post.path.view, body, 'text/html')
+
+
 def main():
     app = webapp.WSGIApplication([
             ('/tasks/upd', Update),
@@ -94,6 +114,7 @@ def main():
             ('/tasks/upd/atom', AtomFeed),
             ('/tasks/upd/sitemap', Sitemap),
             ('/tasks/upd/photo/([\d]+)/?', Photo),
+            ('/tasks/upd/post/([\d]+)/?', Post),
         ],
         debug=config.debug)
     wsgiref.handlers.CGIHandler().run(app)
