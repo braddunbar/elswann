@@ -33,6 +33,7 @@ class BlogPost(db.Model):
             edit = '/admin/post/' + id
             delete = '/admin/post/delete/' + id
             preview = '/admin/post/preview/' + id
+            update = '/tasks/upd/post/' + id
         return paths
 
     path = property(_path)
@@ -50,6 +51,7 @@ class Photo(db.Model):
             view = '/photo/' + id
             thumb = '/photo/thumb/' + id
             delete = '/admin/photo/delete/' + id
+            update = '/tasks/upd/photo/' + id
         return paths
 
     path = property(_path)

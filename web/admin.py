@@ -97,7 +97,7 @@ class EditPost(webapp.RequestHandler):
                 'recentphotos': models.recentphotos(),
                 'config': config,
             }))
-        taskqueue.add(url='/tasks/res/upd', method='GET')
+        taskqueue.add(url='/tasks/upd', method='GET')
 
 
 class Posts(webapp.RequestHandler):
@@ -134,7 +134,7 @@ class DeletePhoto(webapp.RequestHandler):
         models.rmres(photo.path.view)
         models.rmres(photo.path.thumb)
         photo.delete()
-        taskqueue.add(url='/tasks/res/upd', method='GET')
+        taskqueue.add(url='/tasks/upd', method='GET')
         self.redirect('/admin/photos')
 
 
@@ -145,7 +145,7 @@ class DeletePost(webapp.RequestHandler):
         if not post:
             return self.error(404)
         post.delete()
-        taskqueue.add(url='/tasks/res/upd', method='GET')
+        taskqueue.add(url='/tasks/upd', method='GET')
         self.redirect('/admin')
 
 
@@ -157,7 +157,7 @@ class PhotoUpload(webapp.RequestHandler):
             photo.img = db.Blob(img)
             photo.put()
             photo.setres()
-        taskqueue.add(url='/tasks/res/upd', method='GET')
+        taskqueue.add(url='/tasks/upd', method='GET')
         self.redirect('/admin')
 
 

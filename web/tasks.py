@@ -64,17 +64,36 @@ class Sitemap(webapp.RequestHandler):
 class Update(webapp.RequestHandler):
 
     def get(self):
-        taskqueue.add(url='/tasks/res/atom', method='GET')
-        taskqueue.add(url='/tasks/res/sitemap', method='GET')
-        taskqueue.add(url='/tasks/res/robots', method='GET')
+        taskqueue.add(url='/tasks/upd/atom', method='GET')
+        taskqueue.add(url='/tasks/upd/sitemap', method='GET')
+        taskqueue.add(url='/tasks/upd/robots', method='GET')
+
+
+class UpdateAll(webapp.RequestHandler):
+
+    def get(self):
+        for photo in models.Photo.all():
+            taskqueue.add(url=photo.path.update, method='GET')
+        taskqueue.add(url='/tasks/upd', method='GET')
+
+
+class Photo(webapp.RequestHandler):
+
+    def get(self, id):
+        photo = models.Photo.get_by_id(int(id))
+        if not photo:
+            return self.error(404)
+        photo.setres()
 
 
 def main():
     app = webapp.WSGIApplication([
-            ('/tasks/res/upd', Update),
-            ('/tasks/res/atom', AtomFeed),
-            ('/tasks/res/sitemap', Sitemap),
-            ('/tasks/res/robots', Robots),
+            ('/tasks/upd', Update),
+            ('/tasks/upd/all', UpdateAll),
+            ('/tasks/upd/robots', Robots),
+            ('/tasks/upd/atom', AtomFeed),
+            ('/tasks/upd/sitemap', Sitemap),
+            ('/tasks/upd/photo/([\d]+)/?', Photo),
         ],
         debug=config.debug)
     wsgiref.handlers.CGIHandler().run(app)
