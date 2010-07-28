@@ -339,10 +339,17 @@ form.delete {
 #header-wrap form#quick-search .btn {
 	display: none;	
 }
-#header-wrap form#quick-search a.feed {
+#quick-search a.feed {
 	position: absolute;
 	top: 4px;
 	right: 4px;
+}
+#quick-search a.feed:hover {
+	background: transparent;
+	border: none;
+}
+#quick-search a.feed img {
+	border: none; /* hack - IE */
 }
 
 #content-outer {

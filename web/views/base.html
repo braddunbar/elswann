@@ -56,12 +56,12 @@
 		</div>
 
 		<form id='quick-search' action='/' method='get'>
+			<a class='feed' href='/feeds/atom.xml'>
+				<img src='{{ "/img/rss_black.png"|mtime }}'>
+			</a>
 			<p>
 				<label for='qsearch'>Search:</label>
 				<input class='tbox' id='qsearch' type='text' name='qsearch' value='Search this site...' title='Start typing and hit ENTER'>
-				<a class='feed' href='/feeds/atom.xml'>
-					<img src='{{ "/img/rss_black.png"|mtime }}'>
-				</a>
 				<input class='btn' type='submit' value='Submit'>
 			</p>
 		</form>
