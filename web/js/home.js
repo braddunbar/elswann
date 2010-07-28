@@ -31,6 +31,19 @@ jQuery(function( $ ) {
 	});
 
 	$( "a[rel=photo]" ).lightbox({ fitToScreen: true });
+
+	var content = false;
+	$( "#qsearch" ).focus( function( event ){
+		if ( !content ){
+			$( this ).val( "" );
+		}
+	})
+	.blur( function( event ){
+		content = !!$.trim( $( this ).val() );
+		if ( !content ) {
+			$( this ).val( "Search This Site..." );
+		}
+	});
 });
 
 
