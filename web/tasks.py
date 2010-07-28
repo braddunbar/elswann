@@ -41,7 +41,7 @@ class Sitemap(webapp.RequestHandler):
         paths = []
 
         for post in models.BlogPost.all():
-            paths.append(post.path()['view'])
+            paths.append(post.path.view)
             tags = tags.union(post.tags)
 
         for tag in tags:

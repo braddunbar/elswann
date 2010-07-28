@@ -26,14 +26,16 @@ class BlogPost(db.Model):
             config.summarylen,
         )
 
-    def path(self):
+    def _path(self):
         id = str(self.key().id())
-        return {
-            'view': '/post/' + id,
-            'edit': '/admin/post/' + id,
-            'delete': '/admin/post/delete/' + id,
-            'preview': '/admin/post/preview/' + id,
-        }
+        class paths(object):
+            view = '/post/' + id
+            edit = '/admin/post/' + id
+            delete = '/admin/post/delete/' + id
+            preview = '/admin/post/preview/' + id
+        return paths
+
+    path = property(_path)
 
 
 class Photo(db.Model):
@@ -42,23 +44,25 @@ class Photo(db.Model):
     img = db.BlobProperty()
     uploaded = db.DateTimeProperty(auto_now_add=True)
 
-    def path(self):
+    def _path(self):
         id = str(self.key().id())
-        return {
-            'view': '/photo/' + id,
-            'thumb': '/photo/thumb/' + id,
-            'delete': '/admin/photo/delete/' + id,
-        }
+        class paths(object):
+            view = '/photo/' + id
+            thumb = '/photo/thumb/' + id
+            delete = '/admin/photo/delete/' + id
+        return paths
+
+    path = property(_path)
 
     def setres(self):
         setres(
-            self.path()['view'],
+            self.path.view,
             self.img,
             'image/jpeg',
             max_age=86400,
         )
         setres(
-            self.path()['thumb'],
+            self.path.thumb,
             images.resize(self.img, 40, 40),
             'image/jpeg',
             max_age=86400,

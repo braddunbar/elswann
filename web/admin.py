@@ -131,8 +131,8 @@ class DeletePhoto(webapp.RequestHandler):
         photo = models.Photo.get_by_id(int(id))
         if not photo:
             return self.error(404)
-        models.rmres(photo.path()['view'])
-        models.rmres(photo.path()['thumb'])
+        models.rmres(photo.path.view)
+        models.rmres(photo.path.thumb)
         photo.delete()
         taskqueue.add(url='/tasks/res/upd', method='GET')
         self.redirect('/admin/photos')
