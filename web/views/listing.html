@@ -21,10 +21,12 @@
 			<span class='date'>{{ post.published|date }}</span>
 		</p>
 	{% endfor %}
-	{% if prev %}
-		<a id='prev' href='{{ prev }}'>&laquo; Newer</a>
-	{% endif %}
-	{% if next %}
-		<a id='next' href='{{ next }}'>Older &raquo;</a>
-	{% endif %}
+	<p>
+		{% if prev %}
+			<a id='prev' href='{{ prev }}'>&laquo; Newer</a>
+		{% endif %}
+		{% if next %}
+			<a id='next' href='{{ next }}'>Older &raquo;</a>
+		{% endif %}
+	</p>
 {% endblock %}

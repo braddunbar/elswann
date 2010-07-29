@@ -19,31 +19,6 @@ from django import newforms as forms
 template.register_template_library('filters')
 version = os.environ['CURRENT_VERSION_ID']
 
-class Index(webapp.RequestHandler):
-
-    def get(self, *args):
-        page = int(args[0]) if len(args) else 0
-        q = models.BlogPost.all().order('-published')
-        q = q.filter('draft =', False)
-        q = q.fetch(config.postcount + 1, page * config.postcount)
-
-        prev = None
-        if page != 0:
-            prev = '/' + ('' if page == 1 else str(page - 1))
-
-        next = None
-        if len(q) > config.postcount:
-            next = '/%s' % str(page + 1)
-
-        self.response.out.write(template.render('views/listing.html', {
-            'posts': q[:config.postcount],
-            'next': next,
-            'prev': prev,
-            'page': page,
-            'recentphotos': models.recentphotos(),
-            'config': config,
-        }))
-
 
 class Tagged(webapp.RequestHandler):
 
@@ -133,8 +108,6 @@ class Resource(webapp.RequestHandler):
 
 def main():
     app = webapp.WSGIApplication([
-            ('/?', Index),
-            ('/([\d]+)/?', Index),
             ('/tagged/([^/]+)/?', Tagged),
             ('/tagged/([^/]+)/([\d]+)/?', Tagged),
             ('/search', Search),
