@@ -13,7 +13,7 @@ def pingsitemap():
     if config.debug:
         return
     url = 'http://www.google.com/webmasters/tools/ping?sitemap='
-    url += 'http://www.elswann.com/sitemap.xml.gz'
+    url += 'http://%s/sitemap.xml.gz' % config.host
     response = urlfetch.fetch(url, '', urlfetch.GET)
     if response.status_code // 100 != 2:
         raise Warning(
