@@ -142,6 +142,7 @@ class DeletePost(webapp.RequestHandler):
         if not post:
             return self.error(404)
         post.delete()
+        models.rmres(post.path.view)
         taskqueue.add(url='/tasks/upd', method='GET')
         self.redirect('/admin')
 
