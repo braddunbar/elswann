@@ -356,6 +356,7 @@ form.delete {
 	background: #fff;
 	width: 100%;
 	min-height: 300px;
+	overflow: hidden; /* IE8 - clear float */
 }
 #content-wrapper {
 	width: 890px;
