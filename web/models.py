@@ -14,11 +14,19 @@ class BlogPost(db.Model):
 
     title = db.StringProperty(required=True, indexed=False)
     body = db.TextProperty(required=True)
-    tags = db.StringListProperty()
+    _tags = db.StringListProperty()
     published = db.DateTimeProperty()
     updated = db.DateTimeProperty(auto_now=True)
     author = db.UserProperty(auto_current_user_add=True)
     draft = db.BooleanProperty(required=True)
+
+    def get_tags(self):
+        return [t.lower() for t in self._tags]
+
+    def set_tags(self, tags):
+        self._tags = [t.lower() for t in tags]
+
+    tags = property(get_tags, set_tags)
 
     def summary(self):
         return text.truncate_html_words(
