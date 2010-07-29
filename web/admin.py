@@ -31,7 +31,6 @@ class Index(webapp.RequestHandler):
 
     def get(self):
         self.response.out.write(template.render('views/admin/index.html', {
-            'recentphotos': models.recentphotos(),
             'config': config,
         }))
 
@@ -70,7 +69,6 @@ class EditPost(webapp.RequestHandler):
                     'draft': post and not post.published,
                 })
                 .as_p(),
-            'recentphotos': models.recentphotos(),
             'config': config,
         }))
 
@@ -94,7 +92,6 @@ class EditPost(webapp.RequestHandler):
         else:
             self.response.out.write(template.render('views/admin/edit.html', {
                 'form': form.as_p(),
-                'recentphotos': models.recentphotos(),
                 'config': config,
             }))
         taskqueue.add(url=post.path.update, method='GET')
@@ -121,7 +118,6 @@ class Posts(webapp.RequestHandler):
             'prev': prev,
             'next': next,
             'page': page,
-            'recentphotos': models.recentphotos(),
             'config': config,
         }))
 
@@ -182,7 +178,6 @@ class Photos(webapp.RequestHandler):
             'prev': prev,
             'next': next,
             'page': page,
-            'recentphotos': models.recentphotos(),
             'config': config,
         }))
 
