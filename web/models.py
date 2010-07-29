@@ -93,13 +93,13 @@ def rmres(path):
 
 
 def getres(path):
-    if path.endswith('/'):
+    if len(path) > 1 and path.endswith('/'):
         path = path[:-1]
     return Resource.get_by_key_name(path)
 
 
 def setres(path, body, content_type, headers=[], **kwargs):
-    if path.endswith('/'):
+    if len(path) > 1 and path.endswith('/'):
         path = path[:-1]
 
     defaults = {
