@@ -67,6 +67,7 @@ class Update(webapp.RequestHandler):
 
     def get(self):
         taskqueue.add(url='/tasks/upd/index', method='GET')
+        taskqueue.add(url='/tasks/upd/tags', method='GET')
         taskqueue.add(url='/tasks/upd/atom', method='GET')
         taskqueue.add(url='/tasks/upd/sitemap', method='GET')
         taskqueue.add(url='/tasks/upd/robots', method='GET')
@@ -108,6 +109,48 @@ class Post(webapp.RequestHandler):
         models.setres(post.path.view, body, 'text/html')
 
 
+class Tags(webapp.RequestHandler):
+
+    def get(self):
+        tags = set()
+        q = models.BlogPost.all()
+        for post in q.filter('draft =', False):
+            map(tags.add, post.tags)
+        
+        for tag in tags:
+            url = '/tasks/upd/tag/' + tag
+            taskqueue.add(url=url, method='GET')
+
+class Tag(webapp.RequestHandler):
+
+    def get(self, tag):
+        q = models.BlogPost.all().order('-published')
+        q = q.filter('draft =', False)
+        q = q.filter('_tags =', tag)
+
+        url = '/tagged/' + tag + '/%s'
+        posts = q.fetch(config.postcount)
+        for page in count():
+            if not len(posts):
+                break
+            q.with_cursor(q.cursor())
+            nextpage = q.fetch(config.postcount)
+
+            prev = url % ('' if page == 1 else str(page - 1))
+            next = url % str(page + 1)
+
+            body = template.render('views/listing.html', {
+                'posts': posts,
+                'next': next if len(nextpage) else None,
+                'prev': prev if page else None,
+                'page': page,
+                'recentphotos': models.recentphotos(),
+                'config': config,
+            })
+            models.setres(url % (page or ''), body, 'text/html')
+            posts = nextpage
+
+
 class Index(webapp.RequestHandler):
 
     def get(self):
@@ -145,8 +188,10 @@ def main():
             ('/tasks/upd/robots', Robots),
             ('/tasks/upd/atom', AtomFeed),
             ('/tasks/upd/sitemap', Sitemap),
-            ('/tasks/upd/photo/([\d]+)/?', Photo),
-            ('/tasks/upd/post/([\d]+)/?', Post),
+            ('/tasks/upd/tags', Tags),
+            ('/tasks/upd/tag/([^/]+)', Tag),
+            ('/tasks/upd/photo/([\d]+)', Photo),
+            ('/tasks/upd/post/([\d]+)', Post),
         ],
         debug=config.debug)
     wsgiref.handlers.CGIHandler().run(app)

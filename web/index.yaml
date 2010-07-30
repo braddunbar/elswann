@@ -12,6 +12,13 @@ indexes:
 
 - kind: BlogPost
   properties:
+  - name: _tags
+  - name: draft
+  - name: published
+    direction: desc
+
+- kind: BlogPost
+  properties:
   - name: draft
   - name: published
     direction: desc

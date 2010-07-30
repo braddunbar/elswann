@@ -20,32 +20,6 @@ template.register_template_library('filters')
 version = os.environ['CURRENT_VERSION_ID']
 
 
-class Tagged(webapp.RequestHandler):
-
-    def get(self, tag, *args):
-        page = int(args[0]) if len(args) else 0
-        q = models.BlogPost.all().filter('tags =', tag).order('-published')
-        q = q.filter('draft =', False)
-        q = q.fetch(config.postcount + 1, page * config.postcount)
-
-        prev = None
-        if page != 0:
-            prev = '/tagged/%s/%s' % (tag, '' if page == 1 else str(page - 1))
-
-        next = None
-        if len(q) > config.postcount:
-            next = '/tagged/%s/%s' % (tag, str(page + 1))
-
-        self.response.out.write(template.render('views/listing.html', {
-            'posts': q[:config.postcount],
-            'next': next,
-            'prev': prev,
-            'page': page,
-            'recentphotos': models.recentphotos(),
-            'config': config,
-        }))
-
-
 class Search(webapp.RequestHandler):
 
     def get(self):
@@ -108,8 +82,6 @@ class Resource(webapp.RequestHandler):
 
 def main():
     app = webapp.WSGIApplication([
-            ('/tagged/([^/]+)/?', Tagged),
-            ('/tagged/([^/]+)/([\d]+)/?', Tagged),
             ('/search', Search),
             ('(/.*)', Resource),
         ],
