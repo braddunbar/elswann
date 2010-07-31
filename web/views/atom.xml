@@ -20,7 +20,7 @@
 			<uri>http://{{ config.host }}/</uri>
 		</author>
 		<content type="html">
-			{{ post.body|escape }}
+			{{ post.body|linebreaks|escape }}
 		</content>
 	</entry>
 	{% endfor %}
