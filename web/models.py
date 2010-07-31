@@ -28,12 +28,6 @@ class BlogPost(db.Model):
 
     tags = property(get_tags, set_tags)
 
-    def summary(self):
-        return text.truncate_html_words(
-            self.body,
-            config.summarylen,
-        )
-
     def _path(self):
         id = str(self.key().id())
         class paths(object):

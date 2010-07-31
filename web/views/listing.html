@@ -13,7 +13,7 @@
 			{% endif %}
 		</p>
 
-		{{ post.summary|linebreaks }}
+		{{ post.body|truncatewords_html:"200"|linebreaks }}
 
 		<p class='postmeta'>
 			<a href='{{ post.path.view }}' class='readmore'>Read more</a> |

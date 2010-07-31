@@ -8,7 +8,3 @@ host = 'www.elswann.com'
 postcount = 3
 
 pagesize = 25
-
-summarylen = 200
-
-
