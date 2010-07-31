@@ -605,3 +605,5 @@ p.thumbs{ padding: 12px 0 0 10px; }
 	background: white;
 	padding: 5px;
 }
+
+.inline-block { display: inline-block; *display: inline; *zoom:1; }

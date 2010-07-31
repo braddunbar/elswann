@@ -1,5 +1,9 @@
 {% extends "base.html" %}
 {% block title %}All Posts{% endblock %}
+{% block head %}
+	<style>
+	</style>
+{% endblock head %}
 {% block main %}
 	<h2>All Posts</h2>
 	<p>
@@ -14,9 +18,9 @@
 			<a href='{{ next }}'>Next &raquo;</a>
 		{% endif %}
 	</p>
-	<table class='gray'>
+	<table class='gray posts'>
 		<thead>
-			<tr><th>Title</th><th>Published</th><th>Actions</th></tr>
+			<tr><th>Title</th><th>Body</th><th>Published</th><th>Actions</th></tr>
 		</thead>
 		{% for post in posts %}
 			<tr>
@@ -24,19 +28,20 @@
 					<a href='{{ post.path.edit }}'>{{ post.title|escape }}</a>
 				</td>
 				<td>
-					{% if post.draft %}
-						Draft
-					{% else %}
-						{{ post.published|date:"Y-m-d" }}
-					{% endif %}
+					{{ post.body|truncatewords_html:"10" }}
 				</td>
 				<td>
 					{% if post.draft %}
-						<a href='{{ post.path.preview }}'>Preview |</a>
+						Draft
 					{% else %}
-						<a href='{{ post.path.view }}'>View |</a>
+						{{ post.published|date:"h:m D d M Y" }}
 					{% endif %}
-					<a href='{{ post.path.edit }}'>Edit |</a>
+				</td>
+				<td>
+					{% if not post.draft %}
+						<a href='{{ post.path.view }}'>View</a> |
+					{% endif %}
+					<a href='{{ post.path.edit }}'>Edit</a> |
 					<form class='delete gray' action='{{ post.path.delete }}' method='post'>
 						<a href='#' class='delete'>Delete</a>
 					</form>
@@ -60,7 +65,7 @@
 
 		$( ".delete" ).click( function( event ) {
 			var self = $( this );
-			if ( confirm( "Delete this post?" ) ) {
+			if ( confirm( "Delete this post?  (You cannot undo this.)" ) ) {
 				self.closest( "form" ).submit();
 			}
 			return false;

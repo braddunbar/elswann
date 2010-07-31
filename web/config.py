@@ -7,7 +7,7 @@ host = 'www.elswann.com'
 
 postcount = 3
 
-pagesize = 5
+pagesize = 25
 
 summarylen = 200
 

@@ -1,5 +1,14 @@
 {% extends "base.html" %}
 {% block title %}Admin - Photos{% endblock %}
+{% block head %}
+	<style>
+		ul.photolist li { width: 75px; text-align: center; border: solid 1px transparent; }
+		ul.photolist li div { visibility: hidden; }
+		ul.photolist li:hover { visibility: visible; border: solid 1px #dcdcdc; }
+		ul.photolist li:hover img { border: solid 1px transparent; }
+		ul.photolist li:hover div { visibility: visible; }
+	</style>
+{% endblock head %}
 {% block main %}
 	<h2>Photos</h2>
 	<form class='gray' action='/admin/photo/upload' enctype='multipart/form-data' method='post'>
@@ -14,24 +23,19 @@
 			<a href='{{ next }}'>Next &raquo;</a>
 		{% endif %}
 	</p>
-	<table class='gray'>
-		<thead>
-			<tr><th>Photo</th><th>Actions</th></tr>
-		</thead>
+	<ul class='photolist'>
 		{% for photo in photos %}
-			<tr>
-				<td>
-					<img class='thumb' src='{{ photo.path.thumb }}'>
-				</td>
-				<td>
-					<a href='{{ photo.path.view }}'>View |</a>
-					<form class='delete gray' action='{{ photo.path.delete }}' method='post'>
+			<li class='inline-block'>
+				<img class='thumb' src='{{ photo.path.thumb }}'>
+				<div>
+					<a href='{{ photo.path.view }}'>View</a> |
+					<form class='delete' action='{{ photo.path.delete }}' method='post'>
 						<a href='#' class='delete'>Delete</a>
 					</form>
-				</td>
-			</tr>
+				</div>
+			</li>
 		{% endfor %}
-	</table>
+	</ul>
 	<p>
 		{% if prev %}
 			<a href='{{ prev }}'>&laquo; Previous</a>
@@ -48,7 +52,7 @@
 
 		$( ".delete" ).click( function( event ) {
 			var self = $( this );
-			if ( confirm( "Delete this photo?" ) ) {
+			if ( confirm( "Delete this photo? (You cannot undo this.)" ) ) {
 				self.closest( "form" ).submit();
 			}
 			return false;
