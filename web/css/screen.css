@@ -162,10 +162,10 @@ input, select {
 	background: #fff;  	
 }
 form.gray textarea {
-	width: 250px;
+	width: 600px;
 	padding: 4px;
 	font: normal 1em Verdana, sans-serif;
-	height: 100px;
+	height: 200px;
 	display: block;
 	color: #666666;
 }

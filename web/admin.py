@@ -2,6 +2,7 @@
 from __future__ import with_statement
 
 import os
+import re
 import config
 import models
 import logging
@@ -38,19 +39,26 @@ class Index(webapp.RequestHandler):
 class PostForm(djangoforms.ModelForm):
 
     title = forms.CharField(widget=forms.TextInput())
-    body = forms.CharField(widget=forms.Textarea(attrs={
-        'rows': 10,
-        'cols': 20,
-    }))
-    tags = forms.CharField(widget=forms.Textarea(attrs={
-        'rows': 5,
-        'cols': 20,
-    }))
+    body = forms.CharField(widget=forms.Textarea())
+    tags = forms.CharField()
     draft = forms.BooleanField(required=False)
 
     class Meta:
         model = models.BlogPost
-        fields = [ 'title', 'body', 'tags', 'draft' ]
+        exclude = ['published', 'updated', 'author', '_tags']
+
+    def __init__(self, *args, **kwargs):
+        djangoforms.ModelForm.__init__(self, *args, **kwargs)
+        if 'instance' in kwargs:
+            self.initial['tags'] = ' '.join(kwargs['instance'].tags)
+
+    def save(self, commit=True):
+        model = djangoforms.ModelForm.save(self, commit=False)
+        tags = self.clean_data['tags']
+        model.tags = re.split(r'[,\s]+', tags)
+        if commit:
+            model.put()
+        return model
 
 
 class EditPost(webapp.RequestHandler):
@@ -63,12 +71,7 @@ class EditPost(webapp.RequestHandler):
                 return self.error(404)
 
         self.response.out.write(template.render('views/admin/edit.html', {
-            'form': PostForm(
-                instance=post,
-                initial={
-                    'draft': post and not post.published,
-                })
-                .as_p(),
+            'form': PostForm(instance=post) .as_p(),
             'config': config,
         }))
 
@@ -81,7 +84,6 @@ class EditPost(webapp.RequestHandler):
         form = PostForm(
             data=self.request.POST,
             instance=post,
-            initial={'draft': post and not post.published}
         )
         if form.is_valid():
             post = form.save(commit=False)

@@ -1,6 +1,7 @@
 
 import util
 import gzip
+import urllib
 import config
 import models
 import wsgiref.handlers
@@ -118,7 +119,7 @@ class Tags(webapp.RequestHandler):
             map(tags.add, post.tags)
         
         for tag in tags:
-            url = '/tasks/upd/tag/' + tag
+            url = '/tasks/upd/tag/' + urllib.quote(tag)
             taskqueue.add(url=url, method='GET')
 
 class Tag(webapp.RequestHandler):
