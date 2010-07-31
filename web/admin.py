@@ -40,7 +40,7 @@ class PostForm(djangoforms.ModelForm):
 
     title = forms.CharField(widget=forms.TextInput())
     body = forms.CharField(widget=forms.Textarea())
-    tags = forms.CharField()
+    tags = forms.CharField(help_text='<em>comma or space delimited</em>')
     draft = forms.BooleanField(required=False)
 
     class Meta:
