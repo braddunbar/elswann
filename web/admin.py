@@ -49,8 +49,10 @@ class PostForm(djangoforms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         djangoforms.ModelForm.__init__(self, *args, **kwargs)
-        if 'instance' in kwargs:
-            self.initial['tags'] = ' '.join(kwargs['instance'].tags)
+        
+        instance = kwargs.get('instance')
+        if instance:
+            self.initial['tags'] = ' '.join(instance.tags)
 
     def save(self, commit=True):
         model = djangoforms.ModelForm.save(self, commit=False)
