@@ -44,7 +44,6 @@ class Resource(webapp.RequestHandler):
         self.response.headers['Last-Modified'] = str(last_mod)
         self.response.headers['Content-Type'] = str(res.content_type)
         self.response.headers['ETag'] = str('"%s"' % (res.etag,))
-        self.response.headers['Cache-Control'] = 'public'
 
         if res.max_age:
             header = 'max-age=%d, public' % res.max_age
