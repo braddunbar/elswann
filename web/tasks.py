@@ -40,18 +40,10 @@ class Robots(webapp.RequestHandler):
 class Sitemap(webapp.RequestHandler):
 
     def get(self):
-        tags = set()
-        paths = []
-
-        for post in models.BlogPost.all():
-            paths.append(post.path.view)
-            tags = tags.union(post.tags)
-
-        for tag in tags:
-            paths.append('/tagged/' + tag)
-
+        paths = models.Resource.all(keys_only=True)
+        paths = paths.filter('indexed =', True)
         xml = template.render('views/sitemap.xml', {
-            'paths': paths,
+            'paths': [key.name() for key in paths],
             'config': config,
         })
 

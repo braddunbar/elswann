@@ -64,12 +64,14 @@ class Photo(db.Model):
             self.img,
             'image/jpeg',
             max_age=86400,
+            indexed=False,
         )
         setres(
             self.path.thumb,
             images.resize(self.img, 40, 40),
             'image/jpeg',
             max_age=86400,
+            indexed=False,
         )
 
 
@@ -86,6 +88,7 @@ class Resource(db.Model):
     etag = db.StringProperty()
     headers = db.StringListProperty(default=[])
     max_age = db.IntegerProperty()
+    indexed = db.BooleanProperty(required=True, default=True)
 
 
 def rmres(path):
