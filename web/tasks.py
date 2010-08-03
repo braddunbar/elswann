@@ -25,7 +25,8 @@ class AtomFeed(webapp.RequestHandler):
             'config': config,
         })
 
-        models.setres('/feeds/atom.xml', body, 'application/atom+xml')
+        models.setres('/feeds/atom.xml', body,
+            'application/atom+xml', indexed=False)
 
 
 class Robots(webapp.RequestHandler):
@@ -34,7 +35,7 @@ class Robots(webapp.RequestHandler):
         body = template.render('views/robots.txt', {
             'config': config,
         })
-        models.setres('/robots.txt', body, 'text/plain')
+        models.setres('/robots.txt', body, 'text/plain', indexed=False)
 
 
 class Sitemap(webapp.RequestHandler):
@@ -47,12 +48,14 @@ class Sitemap(webapp.RequestHandler):
             'config': config,
         })
 
-        models.setres('/sitemap.xml', xml, 'application/xml')
+        models.setres('/sitemap.xml', xml,
+            'application/xml', indexed=False)
 
         s = StringIO()
         gzip.GzipFile(fileobj=s, mode='wb').write(xml)
         s.seek(0)
-        models.setres('/sitemap.xml.gz', s.read(), 'application/x-gzip')
+        models.setres('/sitemap.xml.gz', s.read(),
+            'application/x-gzip', indexed=False)
         util.pingsitemap()
 
 
