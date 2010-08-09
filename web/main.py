@@ -14,10 +14,7 @@ from google.appengine.api import users
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import template
 
-from django import newforms as forms
-
 template.register_template_library('filters')
-version = os.environ['CURRENT_VERSION_ID']
 
 
 class Search(webapp.RequestHandler):
