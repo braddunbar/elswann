@@ -39,14 +39,23 @@ jQuery(function( $ ) {
 				linkify( s.text ) +
 				"<br>" +
 				"<span>" +
-					"<a href='http://twitter.com/elswann/status/" + s.id + "'>" +
-						relDate( twitterDate(s.created_at) ) +
+					"<a href='http://twitter.com/elswann/status/" + s.id +
+						"' data-created-at='" + twitterDate(s.created_at) + "'>" +
 					"</a>" +
 					" via " + s.source +
 				"</span>" +
 			"</li>";
 		});
 		$( ".tweets" ).html( list.join( "" ) );
+
+		function update(){
+			$( ".tweets a" ).each( function( i, o ) {
+				var self = $( this );
+				self.text( relDate(self.attr("data-created-at")) );
+			});
+		}
+		update();
+		setInterval( update, 5000 );
 
 		twttr.anywhere( function( t ) {
 			t.hovercards();
