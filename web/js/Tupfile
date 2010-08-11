@@ -1,4 +1,4 @@
 
 include_rules
 
-: date.js jquery.lightbox.js pretty.js home.js |> !minjs |> _home.js
+: jquery.lightbox.js home.js |> !minjs |> _home.js
