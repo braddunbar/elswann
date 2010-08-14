@@ -1,35 +1,64 @@
 
-from __future__ import with_statement
-
-import os
 import util
 import config
-import models
-import logging
+import hashlib
 import wsgiref.handlers
 
 from datetime import datetime, timedelta
 
-from google.appengine.api import users
+from google.appengine.ext import db
 from google.appengine.ext import webapp
-from google.appengine.ext.webapp import template
-
-template.register_template_library('filters')
 
 
-class Search(webapp.RequestHandler):
+class Resource(db.Model):
 
-    def get(self):
-        self.response.out.write(template.render('views/search.html', {
-            'recentphotos': models.recentphotos(),
-            'config': config,
-        }))
+    body = db.BlobProperty()
+    content_type = db.StringProperty()
+    status = db.IntegerProperty(required=True, default=200)
+    last_mod = db.DateTimeProperty(required=True)
+    etag = db.StringProperty()
+    headers = db.StringListProperty(default=[])
+    max_age = db.IntegerProperty()
+    indexed = db.BooleanProperty(required=True, default=True)
 
 
-class Resource(webapp.RequestHandler):
+def rm(path):
+    res = get(path)
+    if res:
+        res.delete()
+
+
+def get(path):
+    if len(path) > 1 and path.endswith('/'):
+        path = path[:-1]
+    return Resource.get_by_key_name(path)
+
+
+def put(path, body, content_type, headers=[], **kwargs):
+    if len(path) > 1 and path.endswith('/'):
+        path = path[:-1]
+
+    defaults = {
+        'last_mod': datetime.now(),
+    }
+    defaults.update(kwargs)
+    defaults['last_mod'].replace(second=0, microsecond=0)
+
+    res = Resource(
+        key_name=path,
+        body=body,
+        etag=hashlib.sha1(body).hexdigest(),
+        content_type=content_type,
+        headers=headers,
+        **defaults
+    )
+    res.put()
+
+
+class ResourceHandler(webapp.RequestHandler):
 
     def get(self, path):
-        res = models.getres(path)
+        res = get(path)
         if not res:
             return self.error(404)
 
@@ -78,8 +107,7 @@ class Resource(webapp.RequestHandler):
 
 def main():
     app = webapp.WSGIApplication([
-            ('/search', Search),
-            ('(/.*)', Resource),
+            ('(/.*)', ResourceHandler),
         ],
         debug=config.debug)
     wsgiref.handlers.CGIHandler().run(app)

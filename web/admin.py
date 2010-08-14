@@ -132,8 +132,8 @@ class DeletePhoto(webapp.RequestHandler):
         photo = models.Photo.get_by_id(int(id))
         if not photo:
             return self.error(404)
-        models.rmres(photo.path.view)
-        models.rmres(photo.path.thumb)
+        resources.rm(photo.path.view)
+        resources.rm(photo.path.thumb)
         photo.delete()
         taskqueue.add(url='/tasks/upd', method='GET')
         self.redirect('/admin/photos')
@@ -146,7 +146,7 @@ class DeletePost(webapp.RequestHandler):
         if not post:
             return self.error(404)
         post.delete()
-        models.rmres(post.path.view)
+        resources.rm(post.path.view)
         taskqueue.add(url='/tasks/upd', method='GET')
         self.redirect('/admin')
 

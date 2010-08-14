@@ -4,12 +4,12 @@ import gzip
 import urllib
 import config
 import models
+import resources
 import wsgiref.handlers
 
 from itertools import count
 from StringIO import StringIO
 
-from google.appengine.ext import db
 from google.appengine.ext import webapp
 from google.appengine.api.labs import taskqueue
 from google.appengine.ext.webapp import template
@@ -25,7 +25,7 @@ class AtomFeed(webapp.RequestHandler):
             'config': config,
         })
 
-        models.setres('/feeds/atom.xml', body,
+        resources.put('/feeds/atom.xml', body,
             'application/atom+xml', indexed=False)
 
 
@@ -35,38 +35,37 @@ class Robots(webapp.RequestHandler):
         body = template.render('views/robots.txt', {
             'config': config,
         })
-        models.setres('/robots.txt', body, 'text/plain', indexed=False)
+        resources.put('/robots.txt', body, 'text/plain', indexed=False)
 
 
 class Sitemap(webapp.RequestHandler):
 
     def get(self):
-        paths = models.Resource.all(keys_only=True)
+        paths = resources.Resource.all(keys_only=True)
         paths = paths.filter('indexed =', True)
         xml = template.render('views/sitemap.xml', {
             'paths': [key.name() for key in paths],
             'config': config,
         })
 
-        models.setres('/sitemap.xml', xml,
+        resources.put('/sitemap.xml', xml,
             'application/xml', indexed=False)
 
         s = StringIO()
         gzip.GzipFile(fileobj=s, mode='wb').write(xml)
         s.seek(0)
-        models.setres('/sitemap.xml.gz', s.read(),
+        resources.put('/sitemap.xml.gz', s.read(),
             'application/x-gzip', indexed=False)
-        util.pingsitemap()
+        if not config.debug:
+            util.pingsitemap(config.host)
 
 
 class Update(webapp.RequestHandler):
 
     def get(self):
-        taskqueue.add(url='/tasks/upd/index', method='GET')
-        taskqueue.add(url='/tasks/upd/tags', method='GET')
-        taskqueue.add(url='/tasks/upd/atom', method='GET')
-        taskqueue.add(url='/tasks/upd/sitemap', method='GET')
-        taskqueue.add(url='/tasks/upd/robots', method='GET')
+        tasks = ['index', 'tags', 'atom', 'sitemap', 'robots', 'search']
+        for task in tasks:
+            taskqueue.add(url='/tasks/upd/' + task, method='GET')
 
 
 class UpdateAll(webapp.RequestHandler):
@@ -77,6 +76,16 @@ class UpdateAll(webapp.RequestHandler):
         for post in models.BlogPost.all():
             taskqueue.add(url=post.path.update, method='GET')
         taskqueue.add(url='/tasks/upd', method='GET')
+
+
+class Search(webapp.RequestHandler):
+
+    def get(self):
+        body = template.render('views/search.html', {
+            'recentphotos': models.recentphotos(),
+            'config': config,
+        })
+        resources.put('/search', body, 'text/html')
 
 
 class Photo(webapp.RequestHandler):
@@ -95,14 +104,14 @@ class Post(webapp.RequestHandler):
         if not post:
             return self.error(404)
         if post.draft:
-            models.rmres(post.path.view)
+            resources.rm(post.path.view)
             return
         body = template.render('views/post.html', {
             'post': post,
             'recentphotos': models.recentphotos(),
             'config': config,
         })
-        models.setres(post.path.view, body, 'text/html')
+        resources.put(post.path.view, body, 'text/html')
 
 
 class Tags(webapp.RequestHandler):
@@ -143,7 +152,7 @@ class Tag(webapp.RequestHandler):
                 'recentphotos': models.recentphotos(),
                 'config': config,
             })
-            models.setres(url % (page or ''), body, 'text/html')
+            resources.put(url % (page or ''), body, 'text/html')
             posts = nextpage
 
 
@@ -172,7 +181,7 @@ class Index(webapp.RequestHandler):
                 'recentphotos': models.recentphotos(),
                 'config': config,
             })
-            models.setres( '/' + str(page) if page else '/', body, 'text/html')
+            resources.put( '/' + str(page) if page else '/', body, 'text/html')
             posts = nextpage
 
 
@@ -185,6 +194,7 @@ def main():
             ('/tasks/upd/atom', AtomFeed),
             ('/tasks/upd/sitemap', Sitemap),
             ('/tasks/upd/tags', Tags),
+            ('/tasks/upd/search', Search),
             ('/tasks/upd/tag/([^/]+)', Tag),
             ('/tasks/upd/photo/([\d]+)', Photo),
             ('/tasks/upd/post/([\d]+)', Post),

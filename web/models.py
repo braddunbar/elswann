@@ -1,13 +1,8 @@
 
-import config
-import hashlib
-
-from django.utils import text
-from datetime import datetime, timedelta
+import resources
 
 from google.appengine.ext import db
 from google.appengine.api import images
-from google.appengine.api.apiproxy_stub_map import apiproxy
 
 
 class BlogPost(db.Model):
@@ -59,14 +54,14 @@ class Photo(db.Model):
     path = property(_path)
 
     def setres(self):
-        setres(
+        resources.put(
             self.path.view,
             self.img,
             'image/jpeg',
             max_age=86400,
             indexed=False,
         )
-        setres(
+        resources.put(
             self.path.thumb,
             images.resize(self.img, 40, 40),
             'image/jpeg',
@@ -77,48 +72,3 @@ class Photo(db.Model):
 
 def recentphotos():
     return Photo.all().order('-uploaded').fetch(20)
-
-
-class Resource(db.Model):
-
-    body = db.BlobProperty()
-    content_type = db.StringProperty()
-    status = db.IntegerProperty(required=True, default=200)
-    last_mod = db.DateTimeProperty(required=True)
-    etag = db.StringProperty()
-    headers = db.StringListProperty(default=[])
-    max_age = db.IntegerProperty()
-    indexed = db.BooleanProperty(required=True, default=True)
-
-
-def rmres(path):
-    res = getres(path)
-    if res:
-        res.delete()
-
-
-def getres(path):
-    if len(path) > 1 and path.endswith('/'):
-        path = path[:-1]
-    return Resource.get_by_key_name(path)
-
-
-def setres(path, body, content_type, headers=[], **kwargs):
-    if len(path) > 1 and path.endswith('/'):
-        path = path[:-1]
-
-    defaults = {
-        'last_mod': datetime.now(),
-    }
-    defaults.update(kwargs)
-    defaults['last_mod'].replace(second=0, microsecond=0)
-
-    res = Resource(
-        key_name=path,
-        body=body,
-        etag=hashlib.sha1(body).hexdigest(),
-        content_type=content_type,
-        headers=headers,
-        **defaults
-    )
-    res.put()
