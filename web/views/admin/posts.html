@@ -4,6 +4,11 @@
 	<style>
 	</style>
 {% endblock head %}
+{% block menu %}
+	<li><a href='/'>Home</a></li>
+	<li id='current'><a href='/admin/posts'>Posts</a></li>
+	<li><a href='/admin/img'>Images</a></li>
+{% endblock menu %}
 {% block main %}
 	<h2>All Posts</h2>
 	<p>

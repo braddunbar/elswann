@@ -2,6 +2,7 @@
 import resources
 
 from google.appengine.ext import db
+from google.appengine.ext import blobstore
 from google.appengine.api import images
 
 
@@ -31,6 +32,24 @@ class BlogPost(db.Model):
             delete = '/admin/post/delete/' + id
             preview = '/admin/post/preview/' + id
             update = '/tasks/upd/post/' + id
+        return paths
+
+    path = property(_path)
+
+
+class Img(db.Model):
+
+    title = db.StringProperty()
+    blob = blobstore.BlobReferenceProperty()
+    uploaded = db.DateTimeProperty(auto_now_add=True)
+
+    def _path(self):
+        id = str(self.key().id())
+        blobkey = str(self.blob.key())
+        class paths(object):
+            view = images.get_serving_url(blobkey)
+            thumb = images.get_serving_url(blobkey, size=48)
+            delete = '/admin/img/delete/' + id
         return paths
 
     path = property(_path)
@@ -70,5 +89,3 @@ class Photo(db.Model):
         )
 
 
-def recentphotos():
-    return Photo.all().order('-uploaded').fetch(20)

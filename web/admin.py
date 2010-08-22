@@ -16,24 +16,17 @@ os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
 
 from google.appengine.ext import db
 from google.appengine.api import users
-from google.appengine.api import images
 from google.appengine.ext import webapp
+from google.appengine.ext import blobstore
 from google.appengine.ext.db import djangoforms
 from google.appengine.api.labs import taskqueue
 from google.appengine.ext.webapp import template
+from google.appengine.ext.webapp import blobstore_handlers
 
 from django import newforms as forms
 
 version = os.environ['CURRENT_VERSION_ID']
 template.register_template_library('filters')
-
-
-class Index(webapp.RequestHandler):
-
-    def get(self):
-        self.response.out.write(template.render('views/admin/index.html', {
-            'config': config,
-        }))
 
 
 class PostForm(djangoforms.ModelForm):
@@ -126,17 +119,16 @@ class Posts(webapp.RequestHandler):
         }))
 
 
-class DeletePhoto(webapp.RequestHandler):
+class DeleteImg(webapp.RequestHandler):
 
     def post(self, id):
-        photo = models.Photo.get_by_id(int(id))
-        if not photo:
+        img = models.Img.get_by_id(int(id))
+        if not img:
             return self.error(404)
-        resources.rm(photo.path.view)
-        resources.rm(photo.path.thumb)
-        photo.delete()
+        img.blob.delete()
+        img.delete()
         taskqueue.add(url='/tasks/upd', method='GET')
-        self.redirect('/admin/photos')
+        self.redirect('/admin/img')
 
 
 class DeletePost(webapp.RequestHandler):
@@ -151,35 +143,37 @@ class DeletePost(webapp.RequestHandler):
         self.redirect('/admin')
 
 
-class PhotoUpload(webapp.RequestHandler):
+class ImgUpload(blobstore_handlers.BlobstoreUploadHandler):
 
     def post(self):
-        for img in self.request.get_all('photos'):
-            photo = models.Photo()
-            photo.img = db.Blob(img)
-            photo.put()
-            photo.setres()
-        taskqueue.add(url='/tasks/upd', method='GET')
-        self.redirect('/admin')
+        try:
+            for upload in self.get_uploads():
+                img = models.Img(blob=upload.key())
+                img.put()
+            taskqueue.add(url='/tasks/upd', method='GET')
+            self.redirect('/admin')
+        except:
+            self.redirect('/admin/img/uploadfailed')
 
 
-class Photos(webapp.RequestHandler):
+class Imgs(webapp.RequestHandler):
 
     def get(self, *args):
         page = int(args[0]) if len(args) else 0
-        q = models.Photo.all().order('-uploaded')
+        q = models.Img.all().order('-uploaded')
         q = q.fetch(config.pagesize + 1, page * config.pagesize)
 
         prev = None
         if page != 0:
-            prev = '/admin/photos/' + ('' if page == 1 else str(page - 1))
+            prev = '/admin/img/' + ('' if page == 1 else str(page - 1))
 
         next = None
         if len(q) > config.pagesize:
-            next = '/admin/photos/%s' % str(page + 1)
+            next = '/admin/img/' + str(page + 1)
 
-        self.response.out.write(template.render('views/admin/photos.html', {
-            'photos': q[:config.pagesize],
+        self.response.out.write(template.render('views/admin/imgs.html', {
+            'imgs': q[:config.pagesize],
+            'upload_url': blobstore.create_upload_url('/admin/img/upload'),
             'prev': prev,
             'next': next,
             'page': page,
@@ -189,7 +183,7 @@ class Photos(webapp.RequestHandler):
 
 def main():
     app = webapp.WSGIApplication([
-            ('/admin/?', Index),
+            ('/admin/?', Posts),
 
             ('/admin/posts/?', Posts),
             ('/admin/posts/([\d]+)/?', Posts),
@@ -197,10 +191,10 @@ def main():
             ('/admin/post/([\d]+)/?', EditPost),
             ('/admin/post/delete/([\d]+)/?', DeletePost),
 
-            ('/admin/photos/?', Photos),
-            ('/admin/photos/([\d]+)/?', Photos),
-            ('/admin/photo/upload/?', PhotoUpload),
-            ('/admin/photo/delete/([\d]+)/?', DeletePhoto),
+            ('/admin/img/?', Imgs),
+            ('/admin/img/([\d]+)/?', Imgs),
+            ('/admin/img/upload/?', ImgUpload),
+            ('/admin/img/delete/([\d]+)/?', DeleteImg),
         ],
         debug=config.debug)
     wsgiref.handlers.CGIHandler().run(app)

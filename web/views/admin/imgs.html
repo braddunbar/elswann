@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}Admin - Images{% endblock %}
+{% block head %}
+	<style>
+		ul.imglist li { width: 75px; text-align: center; border: solid 1px transparent; }
+		ul.imglist li div { visibility: hidden; }
+		ul.imglist li:hover { visibility: visible; border: solid 1px #dcdcdc; }
+		ul.imglist li:hover img { border: solid 1px transparent; }
+		ul.imglist li:hover div { visibility: visible; }
+	</style>
+{% endblock head %}
+{% block menu %}
+	<li><a href='/'>Home</a></li>
+	<li><a href='/admin/posts'>Posts</a></li>
+	<li id='current'><a href='/admin/img'>Images</a></li>
+{% endblock menu %}
+{% block main %}
+	<h2>Images</h2>
+	<form class='gray' action='{{ upload_url }}' enctype='multipart/form-data' method='post'>
+		<input name='imgs' type='file' multiple>
+		<input type='submit' value='Upload'>
+	</form>
+	<p>
+		{% if prev %}
+			<a href='{{ prev }}'>&laquo; Previous</a>
+		{% endif %}
+		{% if next %}
+			<a href='{{ next }}'>Next &raquo;</a>
+		{% endif %}
+	</p>
+	<ul class='imglist'>
+		{% for img in imgs %}
+			<li class='inline-block'>
+				<img class='thumb' src='{{ img.path.thumb }}'>
+				<div>
+					<a href='{{ img.path.view }}'>View</a> |
+					<form class='delete' action='{{ img.path.delete }}' method='post'>
+						<a href='#' class='delete'>Delete</a>
+					</form>
+				</div>
+			</li>
+		{% endfor %}
+	</ul>
+	<p>
+		{% if prev %}
+			<a href='{{ prev }}'>&laquo; Previous</a>
+		{% endif %}
+		{% if next %}
+			<a href='{{ next }}'>Next &raquo;</a>
+		{% endif %}
+	</p>
+
+{% endblock %}
+{% block scripts %}
+<script>
+	jQuery( function( $ ){
+
+		$( ".delete" ).click( function( event ) {
+			var self = $( this );
+			if ( confirm( "Delete this image? (You cannot undo this.)" ) ) {
+				self.closest( "form" ).submit();
+			}
+			return false;
+		})
+
+	});
+</script>
+{% endblock %}

@@ -16,6 +16,9 @@ from google.appengine.ext.webapp import template
 
 template.register_template_library('filters')
 
+def recentphotos():
+    return models.Img.all().order('-uploaded').fetch(20)
+
 class AtomFeed(webapp.RequestHandler):
 
     def get(self):
@@ -82,7 +85,7 @@ class Search(webapp.RequestHandler):
 
     def get(self):
         body = template.render('views/search.html', {
-            'recentphotos': models.recentphotos(),
+            'recentphotos': recentphotos(),
             'config': config,
         })
         resources.put('/search', body, 'text/html')
@@ -108,7 +111,7 @@ class Post(webapp.RequestHandler):
             return
         body = template.render('views/post.html', {
             'post': post,
-            'recentphotos': models.recentphotos(),
+            'recentphotos': recentphotos(),
             'config': config,
         })
         resources.put(post.path.view, body, 'text/html')
@@ -149,7 +152,7 @@ class Tag(webapp.RequestHandler):
                 'next': next if len(nextpage) else None,
                 'prev': prev if page else None,
                 'page': page,
-                'recentphotos': models.recentphotos(),
+                'recentphotos': recentphotos(),
                 'config': config,
             })
             resources.put(url % (page or ''), body, 'text/html')
@@ -178,7 +181,7 @@ class Index(webapp.RequestHandler):
                 'next': next if len(nextpage) else None,
                 'prev': prev if page > 0 else None,
                 'page': page,
-                'recentphotos': models.recentphotos(),
+                'recentphotos': recentphotos(),
                 'config': config,
             })
             resources.put( '/' + str(page) if page else '/', body, 'text/html')
