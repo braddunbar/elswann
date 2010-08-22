@@ -31,7 +31,7 @@ class BlogPost(db.Model):
             edit = '/admin/post/' + id
             delete = '/admin/post/delete/' + id
             preview = '/admin/post/preview/' + id
-            update = '/tasks/upd/post/' + id
+            update = '/t/post/' + id
         return paths
 
     path = property(_path)

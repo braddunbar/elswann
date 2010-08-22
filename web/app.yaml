@@ -48,7 +48,7 @@ handlers:
   script: admin.py
   login: admin
 
-- url: /tasks(.*)
+- url: /t/.*
   script: tasks.py
   login: admin
 

@@ -68,7 +68,7 @@ class Update(webapp.RequestHandler):
     def get(self):
         tasks = ['index', 'tags', 'atom', 'sitemap', 'robots', 'search']
         for task in tasks:
-            taskqueue.add(url='/tasks/upd/' + task, method='GET')
+            taskqueue.add(url='/t/' + task, method='GET')
 
 
 class UpdateAll(webapp.RequestHandler):
@@ -76,7 +76,7 @@ class UpdateAll(webapp.RequestHandler):
     def get(self):
         for post in models.BlogPost.all():
             taskqueue.add(url=post.path.update, method='GET')
-        taskqueue.add(url='/tasks/upd', method='GET')
+        taskqueue.add(url='/t/upd', method='GET')
 
 
 class Search(webapp.RequestHandler):
@@ -115,7 +115,7 @@ class Tags(webapp.RequestHandler):
             map(tags.add, post.tags)
         
         for tag in tags:
-            url = '/tasks/upd/tag/' + urllib.quote(tag)
+            url = '/t/tag/' + urllib.quote(tag)
             taskqueue.add(url=url, method='GET')
 
 class Tag(webapp.RequestHandler):
@@ -179,16 +179,16 @@ class Index(webapp.RequestHandler):
 
 def main():
     app = webapp.WSGIApplication([
-            ('/tasks/upd', Update),
-            ('/tasks/upd/all', UpdateAll),
-            ('/tasks/upd/index', Index),
-            ('/tasks/upd/robots', Robots),
-            ('/tasks/upd/atom', AtomFeed),
-            ('/tasks/upd/sitemap', Sitemap),
-            ('/tasks/upd/tags', Tags),
-            ('/tasks/upd/search', Search),
-            ('/tasks/upd/tag/([^/]+)', Tag),
-            ('/tasks/upd/post/([\d]+)', Post),
+            ('/t/upd', Update),
+            ('/t/all', UpdateAll),
+            ('/t/index', Index),
+            ('/t/robots', Robots),
+            ('/t/atom', AtomFeed),
+            ('/t/sitemap', Sitemap),
+            ('/t/tags', Tags),
+            ('/t/search', Search),
+            ('/t/tag/([^/]+)', Tag),
+            ('/t/post/([\d]+)', Post),
         ],
         debug=config.debug)
     wsgiref.handlers.CGIHandler().run(app)

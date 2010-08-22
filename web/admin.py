@@ -92,7 +92,7 @@ class EditPost(webapp.RequestHandler):
                 'config': config,
             }))
         taskqueue.add(url=post.path.update, method='GET')
-        taskqueue.add(url='/tasks/upd', method='GET')
+        taskqueue.add(url='/t/upd', method='GET')
 
 
 class Posts(webapp.RequestHandler):
@@ -127,7 +127,7 @@ class DeleteImg(webapp.RequestHandler):
             return self.error(404)
         img.blob.delete()
         img.delete()
-        taskqueue.add(url='/tasks/upd', method='GET')
+        taskqueue.add(url='/t/upd', method='GET')
         self.redirect('/admin/img')
 
 
@@ -139,7 +139,7 @@ class DeletePost(webapp.RequestHandler):
             return self.error(404)
         post.delete()
         resources.rm(post.path.view)
-        taskqueue.add(url='/tasks/upd', method='GET')
+        taskqueue.add(url='/t/upd', method='GET')
         self.redirect('/admin')
 
 
@@ -150,7 +150,7 @@ class ImgUpload(blobstore_handlers.BlobstoreUploadHandler):
             for upload in self.get_uploads():
                 img = models.Img(blob=upload.key())
                 img.put()
-            taskqueue.add(url='/tasks/upd', method='GET')
+            taskqueue.add(url='/t/upd', method='GET')
             self.redirect('/admin')
         except:
             self.redirect('/admin/img/uploadfailed')
