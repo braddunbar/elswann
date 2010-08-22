@@ -53,39 +53,3 @@ class Img(db.Model):
         return paths
 
     path = property(_path)
-
-
-class Photo(db.Model):
-
-    title = db.StringProperty()
-    img = db.BlobProperty()
-    uploaded = db.DateTimeProperty(auto_now_add=True)
-
-    def _path(self):
-        id = str(self.key().id())
-        class paths(object):
-            view = '/photo/' + id
-            thumb = '/photo/thumb/' + id
-            delete = '/admin/photo/delete/' + id
-            update = '/tasks/upd/photo/' + id
-        return paths
-
-    path = property(_path)
-
-    def setres(self):
-        resources.put(
-            self.path.view,
-            self.img,
-            'image/jpeg',
-            max_age=86400,
-            indexed=False,
-        )
-        resources.put(
-            self.path.thumb,
-            images.resize(self.img, 40, 40),
-            'image/jpeg',
-            max_age=86400,
-            indexed=False,
-        )
-
-

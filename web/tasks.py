@@ -74,8 +74,6 @@ class Update(webapp.RequestHandler):
 class UpdateAll(webapp.RequestHandler):
 
     def get(self):
-        for photo in models.Photo.all():
-            taskqueue.add(url=photo.path.update, method='GET')
         for post in models.BlogPost.all():
             taskqueue.add(url=post.path.update, method='GET')
         taskqueue.add(url='/tasks/upd', method='GET')
@@ -89,15 +87,6 @@ class Search(webapp.RequestHandler):
             'config': config,
         })
         resources.put('/search', body, 'text/html')
-
-
-class Photo(webapp.RequestHandler):
-
-    def get(self, id):
-        photo = models.Photo.get_by_id(int(id))
-        if not photo:
-            return self.error(404)
-        photo.setres()
 
 
 class Post(webapp.RequestHandler):
@@ -199,7 +188,6 @@ def main():
             ('/tasks/upd/tags', Tags),
             ('/tasks/upd/search', Search),
             ('/tasks/upd/tag/([^/]+)', Tag),
-            ('/tasks/upd/photo/([\d]+)', Photo),
             ('/tasks/upd/post/([\d]+)', Post),
         ],
         debug=config.debug)
