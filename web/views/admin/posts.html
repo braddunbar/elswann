@@ -16,11 +16,11 @@
 	</p>
 	<br>
 	<p>
-		{% if prev %}
-			<a href='{{ prev }}'>&laquo; Previous</a>
+		{% if posts.prev %}
+			<a href='{{ posts.prev }}'>&laquo; Previous</a>
 		{% endif %}
-		{% if next %}
-			<a href='{{ next }}'>Next &raquo;</a>
+		{% if posts.next %}
+			<a href='{{ posts.next }}'>Next &raquo;</a>
 		{% endif %}
 	</p>
 	<table class='gray posts'>
@@ -55,11 +55,11 @@
 		{% endfor %}
 	</table>
 	<p>
-		{% if prev %}
-			<a href='{{ prev }}'>&laquo; Previous</a>
+		{% if posts.prev %}
+			<a href='{{ posts.prev }}'>&laquo; Previous</a>
 		{% endif %}
-		{% if next %}
-			<a href='{{ next }}'>Next &raquo;</a>
+		{% if posts.next %}
+			<a href='{{ posts.next }}'>Next &raquo;</a>
 		{% endif %}
 	</p>
 

@@ -21,11 +21,11 @@
 		<input type='submit' value='Upload'>
 	</form>
 	<p>
-		{% if prev %}
-			<a href='{{ prev }}'>&laquo; Previous</a>
+		{% if imgs.prev %}
+			<a href='{{ imgs.prev }}'>&laquo; Previous</a>
 		{% endif %}
-		{% if next %}
-			<a href='{{ next }}'>Next &raquo;</a>
+		{% if imgs.next %}
+			<a href='{{ imgs.next }}'>Next &raquo;</a>
 		{% endif %}
 	</p>
 	<ul class='imglist'>
@@ -42,11 +42,11 @@
 		{% endfor %}
 	</ul>
 	<p>
-		{% if prev %}
-			<a href='{{ prev }}'>&laquo; Previous</a>
+		{% if imgs.prev %}
+			<a href='{{ imgs.prev }}'>&laquo; Previous</a>
 		{% endif %}
-		{% if next %}
-			<a href='{{ next }}'>Next &raquo;</a>
+		{% if imgs.next %}
+			<a href='{{ imgs.next }}'>Next &raquo;</a>
 		{% endif %}
 	</p>
 

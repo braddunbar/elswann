@@ -3,6 +3,7 @@ from __future__ import with_statement
 
 import os
 import re
+import util
 import config
 import models
 import logging
@@ -25,7 +26,6 @@ from google.appengine.ext.webapp import blobstore_handlers
 
 from django import newforms as forms
 
-version = os.environ['CURRENT_VERSION_ID']
 template.register_template_library('filters')
 
 
@@ -98,23 +98,12 @@ class EditPost(webapp.RequestHandler):
 class Posts(webapp.RequestHandler):
 
     def get(self, *args):
-        page = int(args[0]) if len(args) else 0
+        i = int(args[0]) if len(args) else 0
         q = models.BlogPost.all().order('-published')
-        q = q.fetch(config.pagesize + 1, page * config.pagesize)
-
-        prev = None
-        if page != 0:
-            prev = '/admin/posts/' + ('' if page == 1 else str(page - 1))
-
-        next = None
-        if len(q) > config.pagesize:
-            next = '/admin/posts/%s' % str(page + 1)
+        posts = util.Pager(q, '/admin/posts/%s')[i]
 
         self.response.out.write(template.render('views/admin/posts.html', {
-            'posts': q[:config.pagesize],
-            'prev': prev,
-            'next': next,
-            'page': page,
+            'posts': posts,
             'config': config,
         }))
 
@@ -159,24 +148,13 @@ class ImgUpload(blobstore_handlers.BlobstoreUploadHandler):
 class Imgs(webapp.RequestHandler):
 
     def get(self, *args):
-        page = int(args[0]) if len(args) else 0
+        i = int(args[0]) if len(args) else 0
         q = models.Img.all().order('-uploaded')
-        q = q.fetch(config.pagesize + 1, page * config.pagesize)
-
-        prev = None
-        if page != 0:
-            prev = '/admin/img/' + ('' if page == 1 else str(page - 1))
-
-        next = None
-        if len(q) > config.pagesize:
-            next = '/admin/img/' + str(page + 1)
+        imgs = util.Pager(q, '/admin/img/%s')[i]
 
         self.response.out.write(template.render('views/admin/imgs.html', {
-            'imgs': q[:config.pagesize],
+            'imgs': imgs,
             'upload_url': blobstore.create_upload_url('/admin/img/upload'),
-            'prev': prev,
-            'next': next,
-            'page': page,
             'config': config,
         }))
 
