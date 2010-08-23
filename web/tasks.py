@@ -121,6 +121,8 @@ class Tags(webapp.RequestHandler):
 class Tag(webapp.RequestHandler):
 
     def get(self, tag):
+        photos = recentphotos()
+
         q = models.BlogPost.all().order('-published')
         q = q.filter('draft =', False)
         q = q.filter('_tags =', tag)
@@ -129,7 +131,7 @@ class Tag(webapp.RequestHandler):
         for posts in util.Pager(q, url, pagesize=config.postcount):
             body = template.render('views/listing.html', {
                 'posts': posts,
-                'recentphotos': recentphotos(),
+                'recentphotos': photos,
                 'config': config,
             })
             resources.put(posts.url, body, 'text/html')
@@ -138,14 +140,15 @@ class Tag(webapp.RequestHandler):
 class Index(webapp.RequestHandler):
 
     def get(self):
-        page = 0
+        photos = recentphotos()
+
         q = models.BlogPost.all().order('-published')
         q = q.filter('draft =', False)
         
         for posts in util.Pager(q, '/%s', pagesize=config.postcount):
             body = template.render('views/listing.html', {
                 'posts': posts,
-                'recentphotos': recentphotos(),
+                'recentphotos': photos,
                 'config': config,
             })
             resources.put(posts.url, body, 'text/html')
