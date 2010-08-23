@@ -126,26 +126,13 @@ class Tag(webapp.RequestHandler):
         q = q.filter('_tags =', tag)
 
         url = '/tagged/' + tag + '/%s'
-        posts = q.fetch(config.postcount)
-        for page in count():
-            if not len(posts):
-                break
-            q.with_cursor(q.cursor())
-            nextpage = q.fetch(config.postcount)
-
-            prev = url % ('' if page == 1 else str(page - 1))
-            next = url % str(page + 1)
-
+        for posts in util.Pager(q, url, pagesize=config.postcount):
             body = template.render('views/listing.html', {
                 'posts': posts,
-                'next': next if len(nextpage) else None,
-                'prev': prev if page else None,
-                'page': page,
                 'recentphotos': recentphotos(),
                 'config': config,
             })
-            resources.put(url % (page or ''), body, 'text/html')
-            posts = nextpage
+            resources.put(posts.url, body, 'text/html')
 
 
 class Index(webapp.RequestHandler):
@@ -155,26 +142,13 @@ class Index(webapp.RequestHandler):
         q = models.BlogPost.all().order('-published')
         q = q.filter('draft =', False)
         
-        posts = q.fetch(config.postcount)
-        for page in count():
-            if not len(posts):
-                break
-            q.with_cursor(q.cursor())
-            nextpage = q.fetch(config.postcount)
-
-            prev = '/' + ('' if page == 1 else str(page - 1))
-            next = '/' + str(page + 1)
-
+        for posts in util.Pager(q, '/%s', pagesize=config.postcount):
             body = template.render('views/listing.html', {
                 'posts': posts,
-                'next': next if len(nextpage) else None,
-                'prev': prev if page > 0 else None,
-                'page': page,
                 'recentphotos': recentphotos(),
                 'config': config,
             })
-            resources.put( '/' + str(page) if page else '/', body, 'text/html')
-            posts = nextpage
+            resources.put(posts.url, body, 'text/html')
 
 
 def main():

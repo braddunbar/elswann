@@ -1,5 +1,7 @@
 from __future__ import division
 
+from itertools import count
+
 from google.appengine.api import urlfetch
 
 
@@ -33,15 +35,37 @@ class Pager(object):
         self.url = url
         self.pagesize = pagesize
 
+    def __iter__(self):
+        result = self.query.fetch(self.pagesize)
+        for index in count():
+            if not len(result):
+                break
+            self.query.with_cursor(self.query.cursor())
+            nextresult = self.query.fetch(self.pagesize)
+
+            page = Page(result)
+            page.index = index
+            page.url = self.url % (index or '')
+
+            if index:
+                page.prev = self.url % ('' if index == 1 else str(index - 1))
+
+            if len(nextresult):
+                page.next = self.url % str(index + 1)
+
+            yield page
+            result = nextresult
+
     def __getitem__(self, index):
-        l = self.query.fetch(self.pagesize + 1, index * self.pagesize)
-        page = Page(l[:self.pagesize])
+        result = self.query.fetch(self.pagesize + 1, index * self.pagesize)
+        page = Page(result[:self.pagesize])
 
         if index > 0:
             page.prev = self.url % ('' if index == 1 else str(index - 1))
 
-        if len(l) > self.pagesize:
+        if len(result) > self.pagesize:
             page.next = self.url % str(index + 1)
 
         page.index = index
+        page.url = self.url % (index or '')
         return page
