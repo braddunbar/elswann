@@ -65,7 +65,7 @@ class EditPost(webapp.RequestHandler):
             if not post:
                 return self.error(404)
 
-        self.response.out.write(template.render('views/admin/edit.html', {
+        self.response.out.write(template.render('views/admin/post.html', {
             'form': PostForm(instance=post) .as_p(),
             'config': config,
         }))
@@ -87,7 +87,7 @@ class EditPost(webapp.RequestHandler):
             post.put()
             self.redirect('/admin')
         else:
-            self.response.out.write(template.render('views/admin/edit.html', {
+            self.response.out.write(template.render('views/admin/post.html', {
                 'form': form.as_p(),
                 'config': config,
             }))
