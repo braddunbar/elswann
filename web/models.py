@@ -1,6 +1,4 @@
 
-import resources
-
 from google.appengine.ext import db
 from google.appengine.ext import blobstore
 from google.appengine.api import images

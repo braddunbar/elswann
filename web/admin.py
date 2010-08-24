@@ -8,6 +8,7 @@ import config
 import models
 import logging
 import datetime
+import resources
 import wsgiref.handlers
 
 #http://code.google.com/p/googleappengine/issues/detail?id=980
