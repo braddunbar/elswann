@@ -1,8 +1,8 @@
 
-import util
 import config
 import hashlib
 import wsgiref.handlers
+from fynbo import util
 
 from datetime import datetime, timedelta
 

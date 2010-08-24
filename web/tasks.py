@@ -1,11 +1,11 @@
 
-import util
 import gzip
 import urllib
 import config
 import models
-import resources
 import wsgiref.handlers
+from fynbo import util
+from fynbo import resources
 
 from itertools import count
 from StringIO import StringIO

@@ -1,23 +1,19 @@
 
-from __future__ import with_statement
-
 import os
 import re
-import util
 import config
 import models
 import logging
 import datetime
-import resources
 import wsgiref.handlers
+from fynbo import util
+from fynbo import resources
 
 #http://code.google.com/p/googleappengine/issues/detail?id=980
 from django.conf import settings
 settings._target = None
 os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
 
-from google.appengine.ext import db
-from google.appengine.api import users
 from google.appengine.ext import webapp
 from google.appengine.ext import blobstore
 from google.appengine.ext.db import djangoforms
