@@ -3,9 +3,10 @@ import os
 import re
 import config
 import models
-import logging
-import datetime
 import wsgiref.handlers
+from datetime import datetime
+
+import fynbo
 from fynbo import util
 from fynbo import resources
 
@@ -80,7 +81,7 @@ class EditPost(webapp.RequestHandler):
         if form.is_valid():
             post = form.save(commit=False)
             if not post.draft and post.published == None:
-                post.published = datetime.datetime.now()
+                post.published = datetime.now()
             post.put()
             self.redirect('/admin')
         else:
