@@ -65,7 +65,6 @@ class EditPost(webapp.RequestHandler):
 
         self.response.out.write(template.render('views/admin/post.html', {
             'form': PostForm(instance=post) .as_p(),
-            'config': config,
         }))
 
     def post(self, *args):
@@ -87,7 +86,6 @@ class EditPost(webapp.RequestHandler):
         else:
             self.response.out.write(template.render('views/admin/post.html', {
                 'form': form.as_p(),
-                'config': config,
             }))
         taskqueue.add(url=post.path.update, method='GET')
         taskqueue.add(url='/t/upd', method='GET')
@@ -102,7 +100,6 @@ class Posts(webapp.RequestHandler):
 
         self.response.out.write(template.render('views/admin/posts.html', {
             'posts': posts,
-            'config': config,
         }))
 
 
@@ -153,7 +150,6 @@ class Imgs(webapp.RequestHandler):
         self.response.out.write(template.render('views/admin/imgs.html', {
             'imgs': imgs,
             'upload_url': blobstore.create_upload_url('/admin/img/upload'),
-            'config': config,
         }))
 
 

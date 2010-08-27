@@ -3,13 +3,13 @@
 <head>
 	<title>{% block title %}el Swann{% endblock %}</title>
 	{% block style %}
-		{% if config.debug %}
+		{% ifdebug %}
 			<link rel='stylesheet' href='{{ "/css/screen.css"|mtime }}'>
 			<link rel='stylesheet' href='{{ "/css/lightbox.css"|mtime }}'>
 			<link rel='stylesheet' href='{{ "/css/grids.css"|mtime }}'>
 		{% else %}
 			<link rel='stylesheet' href='{{ "/css/_screen.css"|mtime }}'>
-		{% endif %}
+		{% endifdebug %}
 	{% endblock %}
 
 	<link rel='alternate feed' type='application/atom+xml' href='/feeds/atom.xml' title='Atom Feed'>
@@ -17,7 +17,7 @@
 
 	{% block head %}{% endblock %}
 
-	{% if not config.debug %}
+	{% ifnotdebug %}
 	<script>
 		var _gaq = _gaq || [];
 
@@ -33,7 +33,7 @@
 			s.parentNode.insertBefore( ga, s );
 		})();
 	</script>
-	{% endif %}
+	{% endifnotdebug %}
 </head>
 <body>
 	<!-- header starts -->
@@ -296,12 +296,12 @@
 
 	<script src='http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js'></script>
 	<script src='http://platform.twitter.com/anywhere.js?id=S7kjdzijerrpaDA43MX1ug&v=1'></script>
-	{% if config.debug %}
+	{% ifdebug %}
 		<script src='{{ "/js/jquery.lightbox.js"|mtime }}'></script>
 		<script src='{{ "/js/home.js"|mtime }}'></script>
 	{% else %}
 		<script src='{{ "/js/_home.js"|mtime }}'></script>
-	{% endif %}
+	{% endifdebug %}
 	{% block scripts %}{% endblock %}
 </body>
 </html>
