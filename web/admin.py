@@ -1,12 +1,12 @@
 
 import os
 import re
-import models
 import wsgiref.handlers
 from datetime import datetime
 
 import fynbo
 from fynbo import util
+from fynbo import models
 from fynbo import resources
 
 #http://code.google.com/p/googleappengine/issues/detail?id=980

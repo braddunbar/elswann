@@ -1,7 +1,6 @@
 
 import gzip
 import urllib
-import models
 import wsgiref.handlers
 from itertools import count
 from StringIO import StringIO
@@ -9,6 +8,7 @@ from StringIO import StringIO
 import fynbo
 import config
 from fynbo import util
+from fynbo import models
 from fynbo import resources
 
 from google.appengine.ext import webapp
