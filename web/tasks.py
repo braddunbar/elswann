@@ -6,6 +6,7 @@ import wsgiref.handlers
 from itertools import count
 from StringIO import StringIO
 
+import fynbo
 import config
 from fynbo import util
 from fynbo import resources
@@ -48,7 +49,7 @@ class Sitemap(webapp.RequestHandler):
         paths = paths.filter('indexed =', True)
         xml = template.render('views/sitemap.xml', {
             'paths': [key.name() for key in paths],
-            'config': config,
+            'host': config.host,
         })
 
         resources.put('/sitemap.xml', xml,
