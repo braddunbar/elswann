@@ -26,7 +26,7 @@ class AtomFeed(webapp.RequestHandler):
         posts = models.BlogPost.all().order('-published')
         body = template.render('views/atom.xml', {
             'posts': posts,
-            'config': config,
+            'host': config.host,
         })
 
         resources.put('/feeds/atom.xml', body,
@@ -37,7 +37,7 @@ class Robots(webapp.RequestHandler):
 
     def get(self):
         body = template.render('views/robots.txt', {
-            'config': config,
+            'host': config.host,
         })
         resources.put('/robots.txt', body, 'text/plain', indexed=False)
 
@@ -85,7 +85,6 @@ class Search(webapp.RequestHandler):
     def get(self):
         body = template.render('views/search.html', {
             'recentphotos': recentphotos(),
-            'config': config,
         })
         resources.put('/search', body, 'text/html')
 
@@ -102,7 +101,6 @@ class Post(webapp.RequestHandler):
         body = template.render('views/post.html', {
             'post': post,
             'recentphotos': recentphotos(),
-            'config': config,
         })
         resources.put(post.path.view, body, 'text/html')
 
@@ -133,7 +131,6 @@ class Tag(webapp.RequestHandler):
             body = template.render('views/listing.html', {
                 'posts': posts,
                 'recentphotos': photos,
-                'config': config,
             })
             resources.put(posts.url, body, 'text/html')
 
@@ -150,7 +147,6 @@ class Index(webapp.RequestHandler):
             body = template.render('views/listing.html', {
                 'posts': posts,
                 'recentphotos': photos,
-                'config': config,
             })
             resources.put(posts.url, body, 'text/html')
 
