@@ -15,7 +15,7 @@ from google.appengine.ext import webapp
 from google.appengine.api.labs import taskqueue
 from google.appengine.ext.webapp import template
 
-template.register_template_library('filters')
+template.register_template_library('fynbo.filters')
 
 def recentphotos():
     return models.Img.all().order('-uploaded').fetch(20)

@@ -23,7 +23,7 @@ from google.appengine.ext.webapp import blobstore_handlers
 
 from django import newforms as forms
 
-template.register_template_library('filters')
+template.register_template_library('fynbo.filters')
 
 
 class PostForm(djangoforms.ModelForm):
