@@ -63,7 +63,7 @@ class EditPost(webapp.RequestHandler):
                 return self.error(404)
 
         self.response.out.write(template.render('views/admin/post.html', {
-            'form': PostForm(instance=post) .as_p(),
+            'form': PostForm(instance=post).as_p(),
         }))
 
     def post(self, *args):
