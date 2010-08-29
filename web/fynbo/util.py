@@ -1,11 +1,12 @@
 from __future__ import division
 
+import os
 from itertools import count
 
 from google.appengine.api import urlfetch
 
-
 HTTP_DATE_FMT = "%a, %d %b %Y %H:%M:%S GMT"
+debug = os.environ['SERVER_SOFTWARE'].startswith('Development')
 
 
 def pingsitemap(host):

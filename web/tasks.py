@@ -60,7 +60,7 @@ class Sitemap(webapp.RequestHandler):
         s.seek(0)
         resources.put('/sitemap.xml.gz', s.read(),
             'application/x-gzip', indexed=False)
-        if not config.debug:
+        if not util.debug:
             util.pingsitemap(config.host)
 
 
@@ -164,7 +164,7 @@ def main():
             ('/t/tag/([^/]+)', Tag),
             ('/t/post/([\d]+)', Post),
         ],
-        debug=config.debug)
+        debug=util.debug)
     wsgiref.handlers.CGIHandler().run(app)
 
 

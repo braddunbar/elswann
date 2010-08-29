@@ -1,5 +1,4 @@
 
-import config
 import hashlib
 import wsgiref.handlers
 from fynbo import util
@@ -109,7 +108,7 @@ def main():
     app = webapp.WSGIApplication([
             ('(/.*)', ResourceHandler),
         ],
-        debug=config.debug)
+        debug=util.debug)
     wsgiref.handlers.CGIHandler().run(app)
 
 

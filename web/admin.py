@@ -1,7 +1,6 @@
 
 import os
 import re
-import config
 import models
 import wsgiref.handlers
 from datetime import datetime
@@ -168,7 +167,7 @@ def main():
             ('/admin/img/upload/?', ImgUpload),
             ('/admin/img/delete/([\d]+)/?', DeleteImg),
         ],
-        debug=config.debug)
+        debug=util.debug)
     wsgiref.handlers.CGIHandler().run(app)
 
 
