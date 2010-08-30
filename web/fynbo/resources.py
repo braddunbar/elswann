@@ -1,9 +1,9 @@
 
 import hashlib
 import wsgiref.handlers
-from fynbo import util
-
 from datetime import datetime, timedelta
+
+import util
 
 from google.appengine.ext import db
 from google.appengine.ext import webapp

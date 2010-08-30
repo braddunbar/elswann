@@ -4,10 +4,9 @@ import re
 import wsgiref.handlers
 from datetime import datetime
 
-import fynbo
-from fynbo import util
-from fynbo import models
-from fynbo import resources
+import util
+import models
+import resources
 
 #http://code.google.com/p/googleappengine/issues/detail?id=980
 from django.conf import settings
