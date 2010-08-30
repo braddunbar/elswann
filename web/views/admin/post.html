@@ -1,5 +1,10 @@
 {% extends "base.html" %}
 {% block title %}{% if form.instance %}Edit{% else %}New{% endif %} Post{% endblock %}
+{% block menu %}
+	<li><a href='/'>Home</a></li>
+	<li id='current'><a href='/admin/posts'>Posts</a></li>
+	<li><a href='/admin/img'>Images</a></li>
+{% endblock menu %}
 {% block main %}
 	<h2>{% if form.instance %}Edit{% else %}New{% endif %} Post</h2>
 	<form class='gray' method="post" action="">
