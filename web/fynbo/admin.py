@@ -11,7 +11,7 @@ import resources
 #http://code.google.com/p/googleappengine/issues/detail?id=980
 from django.conf import settings
 settings._target = None
-os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
+os.environ['DJANGO_SETTINGS_MODULE'] = 'fynbo.settings'
 
 from google.appengine.ext import webapp
 from google.appengine.ext import blobstore
