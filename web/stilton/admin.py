@@ -11,7 +11,7 @@ import resources
 #http://code.google.com/p/googleappengine/issues/detail?id=980
 from django.conf import settings
 settings._target = None
-os.environ['DJANGO_SETTINGS_MODULE'] = 'fynbo.settings'
+os.environ['DJANGO_SETTINGS_MODULE'] = 'stilton.settings'
 
 from google.appengine.ext import webapp
 from google.appengine.ext import blobstore
@@ -22,7 +22,7 @@ from google.appengine.ext.webapp import blobstore_handlers
 
 from django import newforms as forms
 
-template.register_template_library('fynbo.filters')
+template.register_template_library('stilton.filters')
 
 
 class PostForm(djangoforms.ModelForm):

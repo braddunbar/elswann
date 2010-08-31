@@ -1,5 +1,5 @@
 
-from fynbo import admin
+from stilton import admin
 
 
 def main():

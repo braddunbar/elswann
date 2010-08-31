@@ -6,15 +6,15 @@ from itertools import count
 from StringIO import StringIO
 
 import config
-from fynbo import util
-from fynbo import models
-from fynbo import resources
+from stilton import util
+from stilton import models
+from stilton import resources
 
 from google.appengine.ext import webapp
 from google.appengine.api.labs import taskqueue
 from google.appengine.ext.webapp import template
 
-template.register_template_library('fynbo.filters')
+template.register_template_library('stilton.filters')
 
 def recentphotos():
     return models.Img.all().order('-uploaded').fetch(20)

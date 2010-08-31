@@ -1,5 +1,5 @@
 
-from fynbo import resources
+from stilton import resources
 
 
 def main():
