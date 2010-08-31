@@ -53,4 +53,4 @@ handlers:
   login: admin
 
 - url: /.*
-  script: fynbo/resources.py
+  script: resources.py

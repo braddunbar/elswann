@@ -5,7 +5,6 @@ import wsgiref.handlers
 from itertools import count
 from StringIO import StringIO
 
-import fynbo
 import config
 from fynbo import util
 from fynbo import models

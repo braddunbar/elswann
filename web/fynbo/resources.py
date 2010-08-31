@@ -104,13 +104,9 @@ class ResourceHandler(webapp.RequestHandler):
         return False
 
 
-def main():
-    app = webapp.WSGIApplication([
+def main(url_mapping=[]):
+    app = webapp.WSGIApplication(url_mapping + [
             ('(/.*)', ResourceHandler),
         ],
         debug=util.debug)
     wsgiref.handlers.CGIHandler().run(app)
-
-
-if __name__ == '__main__':
-    main()

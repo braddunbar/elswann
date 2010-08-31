@@ -1,9 +1,9 @@
 
-from fynbo import admin
+from fynbo import resources
 
 
 def main():
-    admin.main()
+    resources.main()
 
 
 if __name__ == '__main__':
