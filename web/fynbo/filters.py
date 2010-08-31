@@ -1,8 +1,9 @@
 from __future__ import with_statement
 
 import os
-import django.template
 
+import util
+import django.template
 from django.utils import simplejson
 from google.appengine.ext.webapp import template
 
@@ -15,8 +16,6 @@ with open('mtimes.json') as f:
 def mtime(s):
     return mtimes[s]
 
-
-debug = os.environ['SERVER_SOFTWARE'].startswith('Development')
 
 def do_ifdebug(parser, token):
     tag = token.contents
@@ -34,9 +33,9 @@ def do_ifdebug(parser, token):
     class IfDebugNode(django.template.Node):
 
         def render(self, context):
-            if debug and ifnodes:
+            if util.debug and ifnodes:
                 return ifnodes.render(context)
-            if not debug and elsenodes:
+            if not util.debug and elsenodes:
                 return elsenodes.render(context)
             return ''
 
