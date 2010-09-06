@@ -1,6 +1,6 @@
-[submodule "lib3/oocss"]
-	path = lib3/oocss
+[submodule "lib/oocss"]
+	path = lib/oocss
 	url = git://github.com/braddunbar/oocss.git
-[submodule "lib3/stilton"]
-	path = lib3/stilton
+[submodule "lib/stilton"]
+	path = lib/stilton
 	url = git://github.com/braddunbar/stilton.git
