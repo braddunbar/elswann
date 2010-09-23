@@ -1,5 +1,6 @@
 include_rules
 
 : img/*.jpg img/*.png img/*.ico js/*.js css/*.css \
-	|> stat -c\"/%%n\":\"/%%n?%%Y\", %f | sed -e "1s/^/{/" -e "\$s/,$/}/" > %o \
+	|> stat -c%%n\ %%Y %f \
+	| awk 'BEGIN{ printf "{" }{ if(NR>1) print ","; printf "\"/%%s\":\"/%%s?%%x\"", $1, $1, $2 }END{ printf "}" }' > %o \
 	|> mtimes.json
