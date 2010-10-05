@@ -7,10 +7,8 @@ derived_file_type:
 - python_precompiled
 
 skip_files:
-- ^(.*/)?app\.yaml
-- ^(.*/)?app\.yml
-- ^(.*/)?index\.yaml
-- ^(.*/)?index\.yml
+- ^(.*/)?app\.ya?ml
+- ^(.*/)?index\.ya?ml
 - ^(.*/)?#.*#
 - ^(.*/)?.*~
 - ^(.*/)?.*\.py[co]
@@ -22,15 +20,15 @@ handlers:
 
 - url: /css
   static_dir: css
-  expiration: "300d"
+  expiration: "7d"
 
 - url: /js
   static_dir: js
-  expiration: "300d"
+  expiration: "7d"
 
 - url: /img
   static_dir: img
-  expiration: "300d"
+  expiration: "7d"
 
 - url: /favicon\.ico
   static_files: favicon.ico
